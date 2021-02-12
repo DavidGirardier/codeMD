@@ -37,7 +37,7 @@ norm = False
 mmean = True
 species = 'Cl'
 N = 125
-dt = 41.341
+dt = 0.001
 freq = 1.0
 
 
@@ -91,7 +91,7 @@ vx, vy, vz = swapaxes(vx, 0, 1), swapaxes(vy, 0, 1), swapaxes(vz, 0, 1)
 VCTxx = array([correlation_FFT(vx[i], vx[i], norm=norm) for i in range(N)])
 VCTyy = array([correlation_FFT(vy[i], vy[i], norm=norm) for i in range(N)])
 VCTzz = array([correlation_FFT(vz[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
-#VCTxy = array([correlation_FFT(vx[i], vy[i], norm=norm) for i in range(N)])
+VCTxy = array([correlation_FFT(vx[i], vy[i], norm=norm) for i in range(N)])
 # VCTxz = array([correlation_FFT(vx[i], vz[i], norm=norm) for i in range(N)])
 #VCTyx = array([correlation_FFT(vy[i], vx[i], norm=norm) for i in range(N)])
 # VCTyz = array([correlation_FFT(vy[i], vz[i], norm=norm) for i in range(N)])
@@ -102,7 +102,7 @@ VCTzz = array([correlation_FFT(vz[i], vz[i], norm=norm, mean=mmean) for i in ran
 VCTxx = mean(VCTxx, axis=0)
 VCTyy = mean(VCTyy, axis=0)
 VCTzz = mean(VCTzz, axis=0)
-#VCTxy = mean(VCTxy, axis=0)
+VCTxy = mean(VCTxy, axis=0)
 #VCTxy = mean(VCTyx, axis=0)
 
 if mmean == True :
@@ -117,4 +117,4 @@ if mmean == False :
     else:
         savefile = 'vacf_nomean_nonorm_'+species+'.out'
 
-savetxt(savefile, c_[t, VCTxx, VCTyy, VCTzz])#, VCTxy, VCTyx])
+savetxt(savefile, c_[t, VCTxx, VCTyy, VCTzz, VCTxy])
