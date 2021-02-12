@@ -1,0 +1,38 @@
+# Global parameters
+num_steps       100
+timestep        41.341
+
+# PBC
+num_pbc  3
+
+# Ions definition
+# ---------------
+species
+
+  species_type
+    name           Cl 
+    count          125
+    charge point  -1.0
+    mass           35.453
+
+  species_type
+    name           Na
+    count          125
+    charge point   1.0
+    mass           22.990
+
+# Definitions of the interactions
+interactions
+  coulomb
+    coulomb_rtol       1.6300594548881187e-5
+    coulomb_rcut       19.71
+    coulomb_ktol       1e-7
+
+  fumi-tosi
+     ft_rcut   19.71
+     ft_pair   Cl  Cl     1.6693424287834053 128.08453694199193 121.16866258595391 869.1324863374762   0 0
+     ft_pair   Cl  Na     1.6693424287834053 46.11847196973122  11.699042518576192 51.8495365253344    0 0
+     ft_pair   Na  Na     1.6693424287834053 15.567697814096823  1.75485516361667   2.9841438926573822 0 0  
+
+output
+  default 1
