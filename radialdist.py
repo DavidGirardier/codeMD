@@ -14,6 +14,7 @@ sample = []
 nsample =0
 npart= 250
 counter=0
+stop=10000
 for line in Lines:
 
     if not(line[0]=='#'):
@@ -26,7 +27,8 @@ for line in Lines:
             sample.append(part[:][:]) #Add each matrix pos to a list made of each time step
             nsample = nsample + 1
             part = []
-
+    if nsample == stop:
+        break
 ##Initialisation
 
 delg = box/(2*nhist) #step between each r
