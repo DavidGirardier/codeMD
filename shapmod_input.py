@@ -3,10 +3,10 @@ import numpy as np
 oldfile = open('copydata.inpt', 'r')
 newfile = open('checkpoint.txt', 'w')
 
-angtoau_factor = 1.8897261254535
-veltoau_factor = 1.8897261254535/(4.1341373336493*(10**3))
-lambau = angtoau_factor * 0.317
-lambauvel = lambau / (4.1341373336493*(10**2))
+#angtoau_factor = 1.8897261254535
+#veltoau_factor = 1.8897261254535/(4.1341373336493*(10**3))
+autolambda = 1.0/(1.8897261254535*0.317)
+autolambdavel = autolambda * 41.341374575751 * 7.026280076
 initialbox = 39.43023755756404
 natom = 250
 Lines = oldfile.readlines()
@@ -22,9 +22,9 @@ for line in Lines:
     arr.append(splitted[:])
 
 #print(arr[:])
-newfile.write(str(natom) +'\t'+ str(initialbox/lambau) +'\n')
+newfile.write(str(natom) +'\t'+ str(initialbox*autolambda) +'\n')
 for i in range(125):
-    newfile.write(str(arr[i+125][0]/lambau) +'\t'+ str(str(arr[i+125][1]/lambau)) +'\t'+ str(arr[i+125][2]/lambau) + '\t'+ str(arr[i+375][0]/lambauvel) +'\t'+ str(str(arr[i+375][1]/lambauvel)) +'\t'+ str(arr[i+375][2]/lambauvel) +'\t'+ str(arr[i+125][0]/lambau) +'\t'+ str(str(arr[i+125][1]/lambau)) +'\t'+ str(arr[i+125][2]/lambau) + '\t'+ str(arr[i+375][0]/lambauvel) +'\t'+ str(str(arr[i+375][1]/lambauvel)) +'\t'+ str(arr[i+375][2]/lambauvel) + '\n')
-    newfile.write(str(arr[i][0]/lambau) +'\t'+ str(str(arr[i][1]/lambau)) +'\t'+ str(arr[i][2]/lambau) +'\t' + str(arr[i+250][0]/lambauvel) +'\t'+ str(str(arr[i+250][1]/lambauvel)) +'\t'+ str(arr[i+250][2]/lambauvel) +'\t'+ str(arr[i][0]/lambau) +'\t'+ str(str(arr[i][1]/lambau)) +'\t'+ str(arr[i][2]/lambau) + '\t'+ str(arr[i+250][0]/lambauvel) +'\t'+ str(str(arr[i+250][1]/lambauvel)) +'\t'+ str(arr[i+250][2]/lambauvel) + '\n')
+    newfile.write(str(arr[i+125][0]*autolambda) +'\t'+ str(str(arr[i+125][1]*autolambda)) +'\t'+ str(arr[i+125][2]*autolambda) + '\t'+ str(arr[i+375][0]*autolambdavel) +'\t'+ str(str(arr[i+375][1]*autolambdavel)) +'\t'+ str(arr[i+375][2]*autolambdavel) +'\t'+ str(arr[i+125][0]*autolambda) +'\t'+ str(str(arr[i+125][1]*autolambda)) +'\t'+ str(arr[i+125][2]*autolambda) + '\t'+ str(arr[i+375][0]*autolambdavel) +'\t'+ str(str(arr[i+375][1]*autolambdavel)) +'\t'+ str(arr[i+375][2]*autolambdavel) + '\n')
+    newfile.write(str(arr[i][0]*autolambda) +'\t'+ str(str(arr[i][1]*autolambda)) +'\t'+ str(arr[i][2]*autolambda) +'\t' + str(arr[i+250][0]*autolambdavel) +'\t'+ str(str(arr[i+250][1]*autolambdavel)) +'\t'+ str(arr[i+250][2]*autolambdavel) +'\t'+ str(arr[i][0]*autolambda) +'\t'+ str(str(arr[i][1]*autolambda)) +'\t'+ str(arr[i][2]*autolambda) + '\t'+ str(arr[i+250][0]*autolambdavel) +'\t'+ str(str(arr[i+250][1]*autolambdavel)) +'\t'+ str(arr[i+250][2]*autolambdavel) + '\n')
 
 newfile.close()
