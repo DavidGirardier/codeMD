@@ -1,6 +1,6 @@
 import numpy as np
 
-oldfile = open('copydata.inpt', 'r')
+oldfile = open('data.inpt', 'r')
 newfile = open('checkpoint.txt', 'w')
 
 #angtoau_factor = 1.8897261254535

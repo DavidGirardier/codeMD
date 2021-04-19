@@ -9,7 +9,12 @@ xx=[]
 yy=[]
 zz=[]
 xy=[]
-Nt=2000
+xz=[]
+yx=[]
+yz=[]
+zx=[]
+zy=[]
+Nt=40000
 for line in Lines:
 
     counter = counter + 1
@@ -22,6 +27,11 @@ for line in Lines:
         yy.append(splitted[2])
         zz.append(splitted[3])
         xy.append(splitted[4])
+        xz.append(splitted[5])
+        yx.append(splitted[6])
+        yz.append(splitted[7])
+        zx.append(splitted[8])
+        zy.append(splitted[9])
     if (counter==Nt):
         break
         counter = -1
@@ -31,12 +41,22 @@ xx = array(xx)
 yy = array(yy)
 zz = array(zz)
 xy = array(xy)
+xz = array(xz)
+yx = array(yx)
+yz = array(yz)
+zx = array(zx)
+zy = array(zy)
 
 
 Dxx = []
 Dyy = []
 Dzz = []
 Dxy = []
+Dxz = []
+Dyx = []
+Dyz = []
+Dzx = []
+Dzy = []
 sum=0.0
 Integral = []
 for t in range(Nt):
@@ -45,6 +65,12 @@ for t in range(Nt):
     Dyy.append(trapz(yy[:t+1],dt[:t+1]))
     Dzz.append(trapz(zz[:t+1],dt[:t+1]))
     Dxy.append(trapz(xy[:t+1],dt[:t+1]))
+    Dxz.append(trapz(xz[:t+1],dt[:t+1]))
+    Dyx.append(trapz(yx[:t+1],dt[:t+1]))
+    Dyz.append(trapz(yz[:t+1],dt[:t+1]))
+    Dzx.append(trapz(zx[:t+1],dt[:t+1]))
+    Dzy.append(trapz(zy[:t+1],dt[:t+1]))
+
 #     d=(xx[t+1]+xx[t])/2*dt[1]
 #     sum=sum+d
 #     print(d)
@@ -55,5 +81,10 @@ Dxx = array(Dxx)
 Dyy = array(Dyy)
 Dzz = array(Dzz)
 Dxy = array(Dxy)
+Dxz = array(Dxz)
+Dyx = array(Dyx)
+Dyz = array(Dyz)
+Dzx = array(Dzx)
+Dzy = array(Dzy)
 outputfile = 'diffusion_' + inputfile
-savetxt(outputfile, c_[dt,Dxx,Dyy,Dzz,Dxy])
+savetxt(outputfile, c_[dt,Dxx,Dyy,Dzz,Dxy,Dxz,Dyx,Dyz,Dzx,Dzy])
