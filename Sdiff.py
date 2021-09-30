@@ -32,38 +32,348 @@ def correlation_FFT(x1, x2, norm=True, mean=False):
         return result
 
 
-#Input
-norm = False
-mmean = False
+#General Input
 every = 20.
-
-dt = (41.341/4.0)*every
+Ntimesteps = 100000
+dt = (41.341)*10.0*every
 freq = 1.0
+##############
+norm = True
+mmean = False
 
-species = 'Cl'
-N = 108
+
+species = 'Big'
+N = 200
 
 
 
-file = open('collected_vneg80000.txt', 'r')
-Lines = file.readlines()
+
+# file = open('v_pos.txt', 'r')
+# Lines = file.readlines()
+
+
 counter = -1
 conversion=((1.8897261254535*0.317)/(41.341374575751 * 7.026280076))
 vx=[]
 vy=[]
 vz=[]
 countime = 0
-for line in Lines:
-    #print('reading')
-    if not(line[0]=='#'):
-        counter = counter + 1
-        if (((counter+1)%216)==0):
-            countime = countime + 1
+for i in range(20,Ntimesteps+1,20):
+    name = 'PSconfig/v_neg_t' + str(i) +'.txt'
+    file = open(name,'r')
+    Lines = file.readlines()
+
+    for line in Lines:
+        #print('reading')
+        if not(line[0]=='#'):
+            counter = counter + 1
+            if (((counter+1)%N)==0):
+                countime = countime + 1
 
 
 
 
-        if (((countime)%every)==0):
+
+            splitted = line.split()
+            splitted = [float(i) for i in splitted] #split each line
+            vx.append(splitted[0]*conversion)
+            vy.append(splitted[1]*conversion)
+            vz.append(splitted[2]*conversion)
+
+        # if ((counter+1)==(216*200000)):
+        #     break
+
+
+
+
+
+vx = array(vx)
+vy = array(vy)
+vz = array(vz)
+
+
+
+#vcmx, vcmy, vcmz = loadtxt("../Analysis.txt", usecols=(7,8,9), unpack=True)
+
+if (len(vx)%N==0):
+  Nt = len(vx)//N
+  t = arange(Nt)*dt*freq
+
+else:
+  raise TypeError('Dimension of velocities is not an integer multiple of the number of particles')
+vx, vy, vz = array(split(vx, Nt)), array(split(vy, Nt)), array(split(vz, Nt))
+vx, vy, vz = swapaxes(vx, 0, 1), swapaxes(vy, 0, 1), swapaxes(vz, 0, 1)
+VCTxx = array([correlation_FFT(vx[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyy = array([correlation_FFT(vy[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzz = array([correlation_FFT(vz[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTxy = array([correlation_FFT(vx[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCTxz = array([correlation_FFT(vx[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyx = array([correlation_FFT(vy[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyz = array([correlation_FFT(vy[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzx = array([correlation_FFT(vz[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzy = array([correlation_FFT(vz[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCT = array([[VCTxx, VCTxy, VCTxz], [VCTyx, VCTyy, VCTyz], [VCTzx, VCTzy, VCTzz]])
+
+VCTxx = mean(VCTxx, axis=0)
+VCTyy = mean(VCTyy, axis=0)
+VCTzz = mean(VCTzz, axis=0)
+VCTxy = mean(VCTxy, axis=0)
+VCTyx = mean(VCTyx, axis=0)
+VCTxz = mean(VCTxz, axis=0)
+VCTyz = mean(VCTyz, axis=0)
+VCTzx = mean(VCTzx, axis=0)
+VCTzy = mean(VCTzy, axis=0)
+
+if mmean == True :
+  if norm == True :
+      savefile = 'vacf_mean_norm_'+species+'.out'
+  else:
+      savefile = 'vacf_mean_nonorm_'+species+'.out'
+
+if mmean == False :
+  if norm == True :
+      savefile = 'vacf_nomean_norm_'+species+'.out'
+  else:
+      savefile = 'vacf_nomean_nonorm_'+species+'.out'
+
+savetxt(savefile, c_[t, VCTxx, VCTyy, VCTzz, VCTxy, VCTxz, VCTyx, VCTyz, VCTzx, VCTzy])
+#savetxt(savefile, c_[t, VCTxy, VCTyx, VCTxz, VCTzx,])
+file.close()
+
+
+
+species = 'Small'
+N = 800
+
+
+
+# file = open('v_pos.txt', 'r')
+# Lines = file.readlines()
+
+
+counter = -1
+conversion=((1.8897261254535*0.317)/(41.341374575751 * 7.026280076))
+vx=[]
+vy=[]
+vz=[]
+countime = 0
+for i in range(20,Ntimesteps+1,20):
+    name = 'PSconfig/v_pos_t' + str(i) +'.txt'
+    file = open(name,'r')
+    Lines = file.readlines()
+
+    for line in Lines:
+        #print('reading')
+        if not(line[0]=='#'):
+            counter = counter + 1
+            if (((counter+1)%N)==0):
+                countime = countime + 1
+
+
+
+
+
+            splitted = line.split()
+            splitted = [float(i) for i in splitted] #split each line
+            vx.append(splitted[0]*conversion)
+            vy.append(splitted[1]*conversion)
+            vz.append(splitted[2]*conversion)
+
+        # if ((counter+1)==(216*200000)):
+        #     break
+
+
+
+
+
+vx = array(vx)
+vy = array(vy)
+vz = array(vz)
+
+
+
+#vcmx, vcmy, vcmz = loadtxt("../Analysis.txt", usecols=(7,8,9), unpack=True)
+
+if (len(vx)%N==0):
+  Nt = len(vx)//N
+  t = arange(Nt)*dt*freq
+
+else:
+  raise TypeError('Dimension of velocities is not an integer multiple of the number of particles')
+vx, vy, vz = array(split(vx, Nt)), array(split(vy, Nt)), array(split(vz, Nt))
+vx, vy, vz = swapaxes(vx, 0, 1), swapaxes(vy, 0, 1), swapaxes(vz, 0, 1)
+VCTxx = array([correlation_FFT(vx[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyy = array([correlation_FFT(vy[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzz = array([correlation_FFT(vz[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTxy = array([correlation_FFT(vx[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCTxz = array([correlation_FFT(vx[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyx = array([correlation_FFT(vy[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyz = array([correlation_FFT(vy[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzx = array([correlation_FFT(vz[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzy = array([correlation_FFT(vz[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCT = array([[VCTxx, VCTxy, VCTxz], [VCTyx, VCTyy, VCTyz], [VCTzx, VCTzy, VCTzz]])
+
+VCTxx = mean(VCTxx, axis=0)
+VCTyy = mean(VCTyy, axis=0)
+VCTzz = mean(VCTzz, axis=0)
+VCTxy = mean(VCTxy, axis=0)
+VCTyx = mean(VCTyx, axis=0)
+VCTxz = mean(VCTxz, axis=0)
+VCTyz = mean(VCTyz, axis=0)
+VCTzx = mean(VCTzx, axis=0)
+VCTzy = mean(VCTzy, axis=0)
+
+if mmean == True :
+  if norm == True :
+      savefile = 'vacf_mean_norm_'+species+'.out'
+  else:
+      savefile = 'vacf_mean_nonorm_'+species+'.out'
+
+if mmean == False :
+  if norm == True :
+      savefile = 'vacf_nomean_norm_'+species+'.out'
+  else:
+      savefile = 'vacf_nomean_nonorm_'+species+'.out'
+
+savetxt(savefile, c_[t, VCTxx, VCTyy, VCTzz, VCTxy, VCTxz, VCTyx, VCTyz, VCTzx, VCTzy])
+#savetxt(savefile, c_[t, VCTxy, VCTyx, VCTxz, VCTzx,])
+file.close()
+
+
+norm = False
+mmean = False
+
+species = 'Big'
+N = 200
+
+
+
+
+# file = open('v_pos.txt', 'r')
+# Lines = file.readlines()
+
+
+counter = -1
+conversion=((1.8897261254535*0.317)/(41.341374575751 * 7.026280076))
+vx=[]
+vy=[]
+vz=[]
+countime = 0
+for i in range(20,Ntimesteps+1,20):
+    name = 'PSconfig/v_neg_t' + str(i) +'.txt'
+    file = open(name,'r')
+    Lines = file.readlines()
+
+    for line in Lines:
+        #print('reading')
+        if not(line[0]=='#'):
+            counter = counter + 1
+            if (((counter+1)%N)==0):
+                countime = countime + 1
+
+
+
+
+
+            splitted = line.split()
+            splitted = [float(i) for i in splitted] #split each line
+            vx.append(splitted[0]*conversion)
+            vy.append(splitted[1]*conversion)
+            vz.append(splitted[2]*conversion)
+
+        # if ((counter+1)==(216*200000)):
+        #     break
+
+
+
+
+
+vx = array(vx)
+vy = array(vy)
+vz = array(vz)
+
+
+
+#vcmx, vcmy, vcmz = loadtxt("../Analysis.txt", usecols=(7,8,9), unpack=True)
+
+if (len(vx)%N==0):
+  Nt = len(vx)//N
+  t = arange(Nt)*dt*freq
+
+else:
+  raise TypeError('Dimension of velocities is not an integer multiple of the number of particles')
+vx, vy, vz = array(split(vx, Nt)), array(split(vy, Nt)), array(split(vz, Nt))
+vx, vy, vz = swapaxes(vx, 0, 1), swapaxes(vy, 0, 1), swapaxes(vz, 0, 1)
+VCTxx = array([correlation_FFT(vx[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyy = array([correlation_FFT(vy[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzz = array([correlation_FFT(vz[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTxy = array([correlation_FFT(vx[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCTxz = array([correlation_FFT(vx[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyx = array([correlation_FFT(vy[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTyz = array([correlation_FFT(vy[i], vz[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzx = array([correlation_FFT(vz[i], vx[i], norm=norm, mean=mmean) for i in range(N)])
+VCTzy = array([correlation_FFT(vz[i], vy[i], norm=norm, mean=mmean) for i in range(N)])
+VCT = array([[VCTxx, VCTxy, VCTxz], [VCTyx, VCTyy, VCTyz], [VCTzx, VCTzy, VCTzz]])
+
+VCTxx = mean(VCTxx, axis=0)
+VCTyy = mean(VCTyy, axis=0)
+VCTzz = mean(VCTzz, axis=0)
+VCTxy = mean(VCTxy, axis=0)
+VCTyx = mean(VCTyx, axis=0)
+VCTxz = mean(VCTxz, axis=0)
+VCTyz = mean(VCTyz, axis=0)
+VCTzx = mean(VCTzx, axis=0)
+VCTzy = mean(VCTzy, axis=0)
+
+if mmean == True :
+  if norm == True :
+      savefile = 'vacf_mean_norm_'+species+'.out'
+  else:
+      savefile = 'vacf_mean_nonorm_'+species+'.out'
+
+if mmean == False :
+  if norm == True :
+      savefile = 'vacf_nomean_norm_'+species+'.out'
+  else:
+      savefile = 'vacf_nomean_nonorm_'+species+'.out'
+
+savetxt(savefile, c_[t, VCTxx, VCTyy, VCTzz, VCTxy, VCTxz, VCTyx, VCTyz, VCTzx, VCTzy])
+#savetxt(savefile, c_[t, VCTxy, VCTyx, VCTxz, VCTzx,])
+file.close()
+
+
+
+species = 'Small'
+N = 800
+
+
+
+# file = open('v_pos.txt', 'r')
+# Lines = file.readlines()
+
+
+counter = -1
+conversion=((1.8897261254535*0.317)/(41.341374575751 * 7.026280076))
+vx=[]
+vy=[]
+vz=[]
+countime = 0
+for i in range(20,Ntimesteps+1,20):
+    name = 'PSconfig/v_pos_t' + str(i) +'.txt'
+    file = open(name,'r')
+    Lines = file.readlines()
+
+    for line in Lines:
+        #print('reading')
+        if not(line[0]=='#'):
+            counter = counter + 1
+            if (((counter+1)%N)==0):
+                countime = countime + 1
+
+
+
+
+
             splitted = line.split()
             splitted = [float(i) for i in splitted] #split each line
             vx.append(splitted[0]*conversion)
@@ -133,7 +443,7 @@ file.close()
 
 
 
-# species = 'Na'
+# species = 'Cl'
 # N = 108
 #
 #
@@ -141,7 +451,7 @@ file.close()
 #
 #
 # #vx, vy, vz = loadtxt('trajectories.out',comments='#', usecols=(3,4,5), unpack=True)
-# file = open('collected_vpos80000.txt', 'r')
+# file = open('v_neg.txt', 'r')
 # Lines = file.readlines()
 # counter = -1
 # conversion=((1.8897261254535*0.317)/(41.341374575751 * 7.026280076))

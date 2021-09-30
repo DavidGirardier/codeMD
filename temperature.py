@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import sqrt, array, correlate, arange, mean, loadtxt, savetxt, c_, split, swapaxes, trapz, transpose, float128
 
 file = open("Analysis.txt","r")
 
@@ -21,6 +21,11 @@ sum_kin2=0.0
 avg_kin = 0.0
 avg_kin2 = 0.0
 
+runningTemp = []
+t=[]
+sumTemp = 0
+meamTemp = 0
+
 count= 0
 for line in fileLines:
     count = count + 1
@@ -29,15 +34,12 @@ for line in fileLines:
     splitted = line.split()
     splitted = [float(i) for i in splitted]
     #print(splitted[0])
-    sum_tot = sum_tot + splitted[1]
-    sum_tot2 = sum_tot2 + splitted[1]**2
-    sum_kin = sum_kin + splitted[2]
-    sum_kin2 = sum_kin2 + splitted[2]**2
-    sum_pot = sum_pot + splitted[3]
-    sum_pot2 = sum_pot2 + splitted[3]**2
+    t.append(splitted[0])
+
+    sumTemp = sumTemp + splitted[5]
     #print(str(sum_tot)+ '\t')
     #print(str(sum_tot2) + '\n')
-
+    runningTemp.append(sumTemp/count)
 
 avg_tot = sum_tot/count
 avg_tot2 = sum_tot2/count
@@ -54,4 +56,5 @@ avg_pot2 = sum_pot2/count
 DV = abs((avg_pot2 - avg_pot**2))**0.5
 
 
-print("DE/DV = " + str(DE/DV) + "\t DE = " + str(DE) + "\t DK = " + str(DK) + "\t DV = " + str(DV))
+print("meanTemp = " + str(sumTemp/count))
+savetxt("runningTemperature.txt", c_[t,runningTemp])
