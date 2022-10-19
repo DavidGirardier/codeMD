@@ -1,0 +1,12 @@
+import numpy as np
+NumberTime = 319
+NumberSmall = 6
+DetT = []
+SHAKEForAllTime = np.loadtxt("SHAKEmatrix.txt")
+
+
+#print(SHAKEForAllTime[(NumberTime*NumberSmall*3):(NumberTime*NumberSmall*3+NumberSmall*3)][:])
+
+for i in range(NumberTime):
+    DetT.append(np.linalg.det(SHAKEForAllTime[(i*NumberSmall*3):(i*NumberSmall*3+NumberSmall*3)][:]))
+np.savetxt("../../DeterminantSHAKEduringSimulation.txt",DetT)

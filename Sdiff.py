@@ -1,4 +1,5 @@
-from numpy import sqrt, array, correlate, arange, mean, loadtxt, savetxt, c_, split, swapaxes, trapz, transpose, float128
+from tracemalloc import stop
+from numpy import sqrt, array, correlate, arange, mean, loadtxt, savetxt, c_, split, swapaxes, trapz, transpose
 
 def correlation_FFT(x1, x2, norm=True, mean=False):
     #computing the lenght of the vectors
@@ -33,17 +34,18 @@ def correlation_FFT(x1, x2, norm=True, mean=False):
 
 
 #General Input
-every = 20.
-Ntimesteps = 100000
-dt = (41.341)*10.0*every
+every = 1.
+Ntimesteps = 20000
+dt = (41.341)*100.0*every
 freq = 1.0
+
 ##############
 norm = True
 mmean = False
 
 
 species = 'Big'
-N = 200
+N = 25
 
 
 
@@ -58,32 +60,37 @@ vx=[]
 vy=[]
 vz=[]
 countime = 0
-for i in range(20,Ntimesteps+1,20):
-    name = 'PSconfig/v_neg_t' + str(i) +'.txt'
-    file = open(name,'r')
-    Lines = file.readlines()
 
-    for line in Lines:
-        #print('reading')
-        if not(line[0]=='#'):
-            counter = counter + 1
-            if (((counter+1)%N)==0):
-                countime = countime + 1
+file = open('PSconfig/v_pos_t.txt', 'r')
+Lines = file.readlines()
+counter = -1
+
+for line in Lines:
+#print('reading')
+    if not(line[0]=='#'):
+        # counter = counter + 1
+
+        # splitted = line.split()
+        # splitted = [float(i) for i in splitted] #split each line
+        # vx.append(splitted[0]*conversion)
+        # vy.append(splitted[1]*conversion)
+        # vz.append(splitted[2]*conversion)
+        if (((counter+1)%N)==0):
+            countime = countime + 1
 
 
 
 
-
+        if (((countime)%every)==0):
             splitted = line.split()
             splitted = [float(i) for i in splitted] #split each line
             vx.append(splitted[0]*conversion)
             vy.append(splitted[1]*conversion)
             vz.append(splitted[2]*conversion)
 
+
         # if ((counter+1)==(216*200000)):
         #     break
-
-
 
 
 
@@ -139,11 +146,11 @@ if mmean == False :
 savetxt(savefile, c_[t, VCTxx, VCTyy, VCTzz, VCTxy, VCTxz, VCTyx, VCTyz, VCTzx, VCTzy])
 #savetxt(savefile, c_[t, VCTxy, VCTyx, VCTxz, VCTzx,])
 file.close()
-
+quit()
 
 
 species = 'Small'
-N = 800
+N = 100
 
 
 
@@ -244,7 +251,7 @@ norm = False
 mmean = False
 
 species = 'Big'
-N = 200
+N = 25
 
 
 
@@ -344,7 +351,7 @@ file.close()
 
 
 species = 'Small'
-N = 800
+N = 100
 
 
 

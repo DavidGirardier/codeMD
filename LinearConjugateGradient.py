@@ -1,5 +1,15 @@
+#from re import S
+#from turtle import st
 import numpy as np
+import time
+import sklearn.datasets
 
+
+startingTime = time.time()
+N = 400
+matrix = sklearn.datasets.make_spd_matrix(N)
+b = np.random.rand(N)
+x_OLD = np.zeros(N)
 #matrix = np.loadtxt('matrix.txt')
 # matrix = np.array([[4,1,2],[1,3,2],[2,2,1]])
 #
@@ -10,9 +20,9 @@ import numpy as np
 # #first step
 #x_OLD = [2., 1., 1.]
 #print(xold[:])
-matrix = np.loadtxt('FullShakeLj.txt')
-b = np.loadtxt('FullPhiLj.txt')
-x_OLD = np.zeros(len(b))
+# matrix = np.loadtxt('FullShakeLj.txt')
+# b = np.loadtxt('FullPhiLj.txt')
+# x_OLD = np.zeros(len(b))
 
 # searchDirection_OLD = b - np.matmul(matrix, x_OLD)
 # residue_OLD = searchDirection_OLD
@@ -117,13 +127,18 @@ while (errorNorm > 1e-10):
 
 
     #print(x_OLD)
-    if count > 4:
+    if count > 10**5:
         print("Max iteration reached")
         break
 
-print(count)
+
+
 print('x with CG = \n')
 print(x_OLD)
-xReal = np.linalg.solve(matrix,b)
-print('x with numpy = \n')
-print(xReal)
+# xReal = np.linalg.solve(matrix,b)
+# print('x with numpy = \n')
+# print(xReal)
+print(count)
+endingTime = time.time()
+print("Time : " + str(endingTime - startingTime) + "s")
+
