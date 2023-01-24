@@ -48,6 +48,6 @@ for j in range(0, len(x)):
 # plt.plot(x,f(x))
 # plt.show()
 print(x)
-savetxt('iniPROFILE', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 10*profile[:,3]**0, 1*mass**0], header='x F F/kT gamma mass')
-#savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 10*profile[:,3]**0, mass**0], header='x F F/kT gamma mass')
+#savetxt('iniPROFILE', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 10*profile[:,3]**0, 1*mass**0], header='x F F/kT gamma mass')
+savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 0.1*profile[:,3]**0, mass**0], header='x F F/kT gamma mass')
 

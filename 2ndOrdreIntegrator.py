@@ -117,8 +117,8 @@ mass = 1.
 kT = 1.
 x0 = 0.
 
-dt=0.01
-t=1.
+dt=0.001
+t=10.
 PrintTraj = True
 lenght = int(t/dt) + 1
 
@@ -129,45 +129,45 @@ alltraj = []
 allvel = []
 x_final = []
 v_final = []
-for j in range(int(numberOfTraj)):
-    v0 = np.sqrt(kT/mass) * np.random.normal()
-    time, traj, vel = CicottiVandenEijdenFP(gamma, mass, kT, x0, v0, dt, t)
+# for j in range(int(numberOfTraj)):
+#     v0 = np.sqrt(kT/mass) * np.random.normal()
+#     time, traj, vel = CicottiVandenEijdenFP(gamma, mass, kT, x0, v0, dt, t)
 
-    if PrintTraj == True:
-        alltime = alltime + time
-        alltraj = alltraj + traj
-        allvel = allvel + vel
+#     if PrintTraj == True:
+#         alltime = alltime + time
+#         alltraj = alltraj + traj
+#         allvel = allvel + vel
     
-    x_final.append(traj[-1])
-    v_final.append(vel[-1])
-    print('Traj'+str(j)+'     Done')
+#     x_final.append(traj[-1])
+#     v_final.append(vel[-1])
+#     print('Traj'+str(j)+'     Done')
 
 
-histo_x = np.histogram(x_final, np.arange(-1.5,1.5,0.05)) 
-histo_v = np.histogram(v_final, np.arange(-5.*kT,5*kT, kT/10.))
+# histo_x = np.histogram(x_final, np.arange(-1.5,1.5,0.05)) 
+# histo_v = np.histogram(v_final, np.arange(-5.*kT,5*kT, kT/10.))
 
-v2 = [v*v for v in v_final]
-x2 = [x*x for x in x_final]
+# v2 = [v*v for v in v_final]
+# x2 = [x*x for x in x_final]
 
-v2_list = []
-# for i in range(len(time)):
-#     v2_list.append(np.mean([allvel[i + j*len(time)]*allvel[i + j*len(time)] for j in range(int(numberOfTraj))]))
+# v2_list = []
+# # for i in range(len(time)):
+# #     v2_list.append(np.mean([allvel[i + j*len(time)]*allvel[i + j*len(time)] for j in range(int(numberOfTraj))]))
 
-#np.savetxt('v2Cicotti', np.c_[time,v2_list], fmt='%1.8E')
+# #np.savetxt('v2Cicotti', np.c_[time,v2_list], fmt='%1.8E')
 
-np.savetxt('qHistoCicotti', np.c_[histo_x[1][:-1],histo_x[0]/numberOfTraj], fmt='%1.8E')
-np.savetxt('vHistoCicotti', np.c_[histo_v[1][:-1],histo_v[0]/numberOfTraj], fmt='%1.8E')
-print('Cicotti-VandenEijden')
-print('<x> = ' + str(np.mean(x_final)) + '\t <x^2> = ' + str(np.mean(x2)))
-print('<v> = ' + str(np.mean(v_final)) + '\t <v^2> = ' + str(np.mean(v2)))
-print('gamma = 2tkT/(m<x^2>) = ' + str(2.*t*kT/(np.mean(x2)*mass)) + '\t input gamma = ' + str(gamma))
-print('mkT = 1/<v^2> = ' + str(1./(np.mean(v2))) + '\t input mkT = ' + str(mass*kT))
-#np.savetxt('VAC_Ciccotti', np.c_[alltime, autocorrelation(allvel)], fmt='%1.8E')
-histo_x = []
-histo_v = []
+# np.savetxt('qHistoCicotti', np.c_[histo_x[1][:-1],histo_x[0]/numberOfTraj], fmt='%1.8E')
+# np.savetxt('vHistoCicotti', np.c_[histo_v[1][:-1],histo_v[0]/numberOfTraj], fmt='%1.8E')
+# print('Cicotti-VandenEijden')
+# print('<x> = ' + str(np.mean(x_final)) + '\t <x^2> = ' + str(np.mean(x2)))
+# print('<v> = ' + str(np.mean(v_final)) + '\t <v^2> = ' + str(np.mean(v2)))
+# print('gamma = 2tkT/(m<x^2>) = ' + str(2.*t*kT/(np.mean(x2)*mass)) + '\t input gamma = ' + str(gamma))
+# print('mkT = 1/<v^2> = ' + str(1./(np.mean(v2))) + '\t input mkT = ' + str(mass*kT))
+# #np.savetxt('VAC_Ciccotti', np.c_[alltime, autocorrelation(allvel)], fmt='%1.8E')
+# histo_x = []
+# histo_v = []
 
-outputName='TrajIntegratorCicotti'
-np.savetxt(outputName, np.c_[alltime,alltraj,allvel], fmt='%1.8E')
+# outputName='TrajIntegratorCicotti'
+# np.savetxt(outputName, np.c_[alltime,alltraj,allvel], fmt='%1.8E')
 
 
 

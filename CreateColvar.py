@@ -8,9 +8,12 @@ seed(1)
 
 t = []
 pos = []
-for j in range(500):
-    for i in range(0, 1000+1):
-        t.append(i/1000.)
+time = 10
+numberofTraj = 100
+dt = 0.0001
+for j in range(numberofTraj):
+    for i in range(0, int(time/dt)+1):
+        t.append(i*dt)
         if i == 0 or i == 1:
             x = 0
         else:

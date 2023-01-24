@@ -1,5 +1,5 @@
 import numpy as np
-inputfile = 'Freeparticle_t1_dt0_01_secondfittedgm'
+inputfile = 'TrajDW5_Gnct_M1_dt0_01_t10'
 trajectories = np.loadtxt(inputfile)
 
 fractions = 5
