@@ -20,21 +20,29 @@ def differencewithPowerSeries(a, x, pointsToInterpolate):
         difference =  difference + abs(pointsToInterpolate[j] - y[j])
     return difference
 
-# x = np.arange(-1.5,1.5,0.01)
-# pointsToInterpolate = np.zeros(len(x))
+#x = arange(-1.5,1.5,0.01)
+#pointsToInterpolate = zeros(len(x))
 
 # start = 100
 # aguess = np.zeros(20)
 profile = loadtxt('profile.txt')
-# x = profile[start:-start,0]
+#x = profile[start:-start,0]
 # #pointsToInterpolate = 1./profile[:,3]
 # pointsToInterpolate = profile[start:-start,1]
 #res = minimize(differencewithPowerSeries, aguess, args=(x, pointsToInterpolate), method='CG', options={'xatol': 1e-8, 'disp': True})
 x = profile[:,0]
-y = profile[:,1]
-print(x)
-f = interp1d(x, y, kind='cubic')
-barrier = 5
+
+
+# ngrid = 1000
+# start = 0.954697
+# end = 1.881799
+# x = arange(start,end+(end-start)/1000.,(end-start)/1000.)
+
+#x = arange(-1.5,1.5,0.01)
+# y = profile[:,1]
+# print(x)
+# f = interp1d(x, y, kind='cubic')
+barrier = 10.
 pointsToInterpolate = zeros(len(x))
 mass = zeros(len(x))
 for j in range(0, len(x)):
@@ -48,6 +56,17 @@ for j in range(0, len(x)):
 # plt.plot(x,f(x))
 # plt.show()
 print(x)
-#savetxt('iniPROFILE', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 10*profile[:,3]**0, 1*mass**0], header='x F F/kT gamma mass')
-savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 0.1*profile[:,3]**0, mass**0], header='x F F/kT gamma mass')
+#savetxt('iniPROFILE', c_[x, 0.*x**0, 0.*x**0, 10.*x**0, 1.*x**0], header='x F F/kT gamma mass')
+#savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 5.*profile[:,3]**0, 1.*mass**0], header='x F F/kT gamma mass')
+#savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 5.33*profile[:,3]**0, 1.*mass**0], header='x F F/kT gamma mass') #no Umbrella
+#savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 4.88*profile[:,3]**0, 1.03*mass**0], header='x F F/kT gamma mass') #ev 10
+#savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 4.33*profile[:,3]**0, 1.25*mass**0], header='x F F/kT gamma mass') #ev 25
+#savetxt('iniPROFILE', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 5.*profile[:,3]**0, 1.*mass**0], header='x F F/kT gamma mass')
+
+
+#savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 5.33*profile[:,3]**0, 1.*mass**0], header='x F F/kT gamma mass') #no Umbrella
+#savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 5.12*profile[:,3]**0, 1.03*mass**0], header='x F F/kT gamma mass') #ev 10
+savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 4.53*profile[:,3]**0, 1.25*mass**0], header='x F F/kT gamma mass') #ev 25
+
+
 

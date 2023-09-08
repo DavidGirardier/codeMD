@@ -36,7 +36,7 @@ def CountTraj(trajectory):
     return nTraj, nSteps, timeTraj
 
 
-for name in ['TrajIntegratorCiccottiFPall1t10dt0_001']:
+for name in ['TrajIntegratorCiccottiFPall1t100dt0_001']:
     trajectory = np.loadtxt(name)
     dt = trajectory[:,0][1]
 
@@ -136,8 +136,8 @@ for name in ['TrajIntegratorCiccottiFPall1t10dt0_001']:
     crossCorrelationLambda = []
     crossCorrelationG1Lambda = []
     crossCorrelationG2Lambda = []
-    listLambda = np.arange(0.0,1.1,0.1)
-    #listLambda = [0.5]
+    #listLambda = np.arange(0.0,1.1,0.1)
+    listLambda = [0.5]
 
     nTraj, nSteps, timeTraj = CountTraj(trajectory)
     listTraj = trajectory[:,1][:].reshape(nTraj,nSteps+1)
@@ -223,6 +223,13 @@ for name in ['TrajIntegratorCiccottiFPall1t10dt0_001']:
         corrvm1q.append(np.mean(vm1q))
         corrum1q.append(np.mean(um1q))
 
+        CorrqG1.append(np.mean(qG1))
+        CorrqG2.append(np.mean(qG2))
+        CorrqG1m1.append(np.mean(qG1m1))
+        CorrqG2m1.append(np.mean(qG2m1))
+        CorrqG1m2.append(np.mean(qG1m2))
+        CorrqG2m2.append(np.mean(qG2m2))
+
 
         diff2 = []
         crossdiff = []
@@ -240,6 +247,13 @@ for name in ['TrajIntegratorCiccottiFPall1t10dt0_001']:
         uqm1 = []
         vm1q = []
         um1q = []
+        qG1=[]
+        qG2=[]
+        qG1m1=[]
+        qG2m1=[]
+        qG1m2=[]
+        qG2m2=[]
+        
 
 #print(correlationLambda)
 outputName = 'CorrelationVrealVfiniteVECall1t' + str(timeTraj) + 'dt' + str(dt)
@@ -250,7 +264,11 @@ outputName = 'meanVU'
 np.savetxt(outputName, np.c_[listLambda, corruuLambda, corrvvLambda, corruum1Lambda, corrvvm1Lambda], fmt='%1.6E')     
 
 outputName = 'meanVelPos'
-np.savetxt(outputName, np.c_[listLambda, corrvq, corruq, corrvqm1, corruqm1, corrvm1q, corrum1q], fmt='%1.6E',header='l <vq> <uq> <vqm1> <uqm1> <vm1q> <um1q>')     
+np.savetxt(outputName, np.c_[listLambda, corrvq, corruq, corrvqm1, corruqm1, corrvm1q, corrum1q], fmt='%1.8E',header='l <vq> <uq> <vqm1> <uqm1> <vm1q> <um1q>')     
+
+outputName = 'meanQG'
+np.savetxt(outputName, np.c_[CorrqG1,CorrqG2,CorrqG1m1,CorrqG2m1,CorrqG1m2,CorrqG2m2], fmt='%1.6E',header='<qG1> <qG2> <qG1m1> <qG2m1> <qG1m2> <qG2m2>')     
+
 
 # AC_Backward = autocorrelation(vBackward)
 # AC_Central = autocorrelation(vCentral)
