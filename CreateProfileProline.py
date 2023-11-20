@@ -19,4 +19,5 @@ x = arange(start,end+(end-start)/1000.,(end-start)/1000.)
 
 print(x)
 #savetxt('iniPROFILEpro', c_[x, 0.*x, 0.*x, 10.*x**0, 0.05741873*x**0], header='x F F/kT gamma mass') #ev1 kernel
-savetxt('iniPROFILEpro', c_[x, 0.*x, 0.*x, 40.*x**0, 0.12*x**0], header='x F F/kT gamma mass') #ev1 kernel
+#savetxt('iniPROFILEpro', c_[x, 0.*x, 0.*x, 40.*x**0, 0.12*x**0], header='x F F/kT gamma mass') #ev1 kernel
+savetxt('iniPROFILEpro', c_[x, 0.*x, 0.*x, 20.*x**0, 0.05741873*x**0], header='x F F/kT gamma mass') #ev1 kernel

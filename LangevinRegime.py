@@ -33,13 +33,13 @@ def autocorrelationFFT(x):
 
 # inputfile = input('Trajectory File:')
 # trajectories = np.loadtxt(inputfile, max_rows=2)
-inputfile= 'zeta10ns_modif'
+inputfile= 'OverdampedWithULE1'
 unzoomedFactor = 1
-dt = 0.001
+dt = 0.0001
 
 #dt=0.001
 numberOfTraj = 1
-tFile = 2000.
+tFile = 10000.
 nLine = tFile/dt
 newdt = dt * unzoomedFactor
 
@@ -99,8 +99,8 @@ def funcVel(x, g, w):
 
 inputname = inputfile+'unzoomed'+str(unzoomedFactor)
 # Load the data from a file
-dt=0.001
-tmax=1
+dt=0.0001
+tmax=10.
 nLine = int(tmax/dt)
 
 

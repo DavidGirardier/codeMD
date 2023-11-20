@@ -1,7 +1,7 @@
 import numpy as np
 
 
-inputfile = '100shooting_modif'
+inputfile = '500TrajMilsteing_gammasmallposm1'
 trajectories = np.loadtxt(inputfile)
 
 IsVel = False
@@ -9,10 +9,10 @@ IsVel = False
 alltime = []
 alltraj = []
 allvel = []
-t = 4.
+t = 1.
 dtIni = 0.001
-dtFinal = 0.1
-numberTraj = 100
+dtFinal = 0.005
+numberTraj = 500
 time = trajectories[:,0].reshape(numberTraj, int(t/dtIni)+1)
 traj = trajectories[:,1].reshape(numberTraj, int(t/dtIni)+1)
 if IsVel == True :

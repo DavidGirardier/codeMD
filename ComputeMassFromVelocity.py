@@ -3,7 +3,8 @@ import numpy as np
 numberOfFile = 5
 tFile = 2000.
 dt = 0.001
-
+gamma=2.0
+mass_anal = 148.
 nLine = int(tFile/dt +1)
 
 inputfile = input('inpute file:')
@@ -12,7 +13,9 @@ positionAndvelocities = []
 fromPosorVel = 'q'
 maxQ=-1000.
 minQ=1000.
-everyList = np.arange(1,10,1)
+#everyList = [1,2,3,4,5,6,7,8,9,10,20,50,100,200,250,300,350,400,450,500,600,700,800,900,1000]
+everyList = [1,2,3,4,5,6,7,8,9,10]
+#everyList = np.arange(1,51,5)
 matrixMass=[]
 mass = []
 error = []
@@ -21,7 +24,7 @@ if fromPosorVel == 'q':
     for j in range(numberOfFile):
         mass = []
         trajectory = np.loadtxt(inputfile, skiprows=nLine*j, max_rows=nLine) 
-        print(trajectory)
+        #print(trajectory)
         for every in everyList:
         
         
@@ -68,7 +71,11 @@ if fromPosorVel == 'q':
 
             #print(np.mean(v2))
             #print('mass =' + str(1./np.mean(v2)))
-            mass.append(1./np.mean(v2))
+            correction = (2.0/3.0)*gamma*dt*every/mass_anal - (2.0/6.0)*gamma*gamma*dt*dt*every/mass_anal
+            print('correction : ',correction)
+            print('<v^2> : ',np.mean(v2))
+            print('mass :', 1./(np.mean(v2)+correction))
+            mass.append(1./(np.mean(v2)+correction))
             #error.append((2./np.mean(v)**3)*np.sqrt(np.var(v2))/np.sqrt(len(v2)))
             positionAndvelocities = []
             v2=[]
@@ -78,7 +85,7 @@ mean_curve = np.mean(matrixMass, axis=0)
 
 # Compute the variance of the aligned curves
 variance_curve = np.var(matrixMass, axis=0)/np.sqrt(numberOfFile)
-outputName = 'mass_'+ inputfile
+outputName = 'massCorrg'+str(gamma)+'_'+ inputfile
 np.savetxt(outputName, np.c_[everyList,mean_curve,variance_curve], fmt='%1.6E')
 
 exit()

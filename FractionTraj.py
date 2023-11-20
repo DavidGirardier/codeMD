@@ -1,5 +1,5 @@
 import numpy as np
-inputfile = '100shooting_modif_newdt0_1'
+inputfile = '500TrajMilsteing_gammasmallposm1_newdt0_005'
 trajectories = np.loadtxt(inputfile)
 
 fractions = 5

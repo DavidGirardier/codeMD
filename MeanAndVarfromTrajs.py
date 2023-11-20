@@ -4,7 +4,7 @@ from scipy.spatial.distance import cdist
 from scipy.optimize import linear_sum_assignment
 
 
-inputfile = 'Profg10m0_057_fraction100shooting_modif_newdt0_1'
+inputfile = 'ProfLessOpti5Loop_fraction500TrajMilsteing_gammasmallposm1_newdt0_005'
 
 
 fractions = 5
@@ -19,7 +19,7 @@ for i in range(1,fractions+1):
     profile = np.loadtxt(inputfilefrac)
     #print(min(profile[:500,1]))
     FEs.append(profile[:,1])
-    #FEs.append(profile[:,1]- min(profile[:200,1]))
+    FEs.append(profile[:,1]- min(profile[:200,1]))
     gammas.append(profile[:,3])
 FEs = np.array(FEs)
 gammas = np.array(gammas)
@@ -69,7 +69,7 @@ plt.plot(q,mean_curve - variance_curve, color='red', linestyle='--', linewidth=1
 plt.fill_between(q, mean_curve - variance_curve, mean_curve + variance_curve, color='red', alpha=0.2)
 
 # Set plot labels and legend
-plt.xlabel('zeta')
+plt.xlabel('q')
 plt.ylabel('kT')
 plt.legend()
 
