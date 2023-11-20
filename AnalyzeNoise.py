@@ -56,15 +56,15 @@ for i in range(1,len(t)-1):
     if (t[i-1]<t[i]) and (t[i]<t[i+1]):
         index_pos = math.floor((x[i]-pos_min)/dpos)
 
-        sigma = np.sqrt(2.*kT*gamma[index_pos]/mass)
+        sigma = np.sqrt(2.*kT*gamma[index_pos]*dt/mass)
 
-        # recovered_noise = ((x[i+1] - x[i])/dt - 
-        #                    (1.0 -  gamma[index_pos]*dt/2.0)*(x[i+1] - x[i-1])/dt 
-        #                    - 0.5*dt*dFE[index_pos]/mass)*2.0/sigma
-        print(v[i-1]-(x[i+1] - x[i-1])/dt)
         recovered_noise = ((x[i+1] - x[i])/dt - 
-                           (1.0 -  gamma[index_pos]*dt/2.0)*v[i] 
+                           (1.0 -  gamma[index_pos]*dt/2.0)*(x[i+1] - x[i-1])/dt 
                            - 0.5*dt*dFE[index_pos]/mass)*2.0/sigma
+        print(v[i-1]-(x[i+1] - x[i-1])/dt)
+        # recovered_noise = ((x[i+1] - x[i])/dt - 
+        #                    (1.0 -  gamma[index_pos]*dt/2.0)*v[i] 
+        #                    - 0.5*dt*dFE[index_pos]/mass)*2.0/sigma
         recovered_noise_list.append(recovered_noise)
 
 
