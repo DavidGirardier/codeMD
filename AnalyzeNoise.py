@@ -101,16 +101,32 @@ for sample in range(1,numberOfSample+1):
     histo_noise_matrix.append(histo_noise[0]/(len(recovered_noise_list)))
 
 
-
 mean_histo_noise = np.mean(histo_noise_matrix,axis=0)
+std_histo_noise = np.std(histo_noise_matrix,axis=0)
 plt.plot(histo_noise[1][:-1],mean_histo_noise)
 plt.show()
 
 mean_noise_corr = np.mean(noise_corr_matrix,axis=0)
+std_noise_corr = np.std(noise_corr_matrix,axis=0)
 plt.plot(np.arange(10),mean_noise_corr[0:10])
 plt.show()
 
-    
+outputName = 'MeanAndErrorHisto'+'_'+input_prof
+np.savetxt(outputName, np.c_[histo_noise[1][:-1],mean_histo_noise,std_histo_noise/np.sqrt(numberOfSample)], fmt='%1.8E')
+outputName = 'MeanAndErrorCorr'+'_'+input_prof
+np.savetxt(outputName, np.c_[np.arange(len(mean_noise_corr)),mean_noise_corr, std_noise_corr/np.sqrt(numberOfSample)], fmt='%1.8E')
+
+#print(np.var(recovered_noise_matrix,axis=1))
+print('Mean = ', np.mean(np.mean(recovered_noise_matrix,axis=1)))
+print('Var = ',np.mean(np.var(recovered_noise_matrix,axis=1)))
+print('Err on var = ', np.std(np.var(recovered_noise_matrix,axis=1))/np.sqrt(numberOfSample))
+
+
+print('<G(t)G(t+1)> = ', mean_noise_corr[1])  
+arr = np.array(noise_corr_matrix)
+  
+print('Err on corr = ',np.std(arr[:,1])/np.sqrt(numberOfSample)) 
+
 
     
         
