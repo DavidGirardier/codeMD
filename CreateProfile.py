@@ -35,21 +35,22 @@ profile = loadtxt('profile.txt')
 x = profile[:,0]
 
 
-# ngrid = 1000
-# start = -0.52
-# end = -0.475
-# x = arange(start,end+(end-start)/1000.,(end-start)/1000.)
+ngrid = 1000
+start = -1.5
+end = 1.5
+x = arange(start,end+(end-start)/1000.,(end-start)/1000.)
 
 #x = arange(-1.5,1.5,0.01)
 # y = profile[:,1]
 # print(x)
 # f = interp1d(x, y, kind='cubic')
-barrier = 10.
+# barrier = 10.
 pointsToInterpolate = zeros(len(x))
 mass = zeros(len(x))
-for j in range(0, len(x)):
-    pointsToInterpolate[j] = barrier*x[j]**4 - 2.0*barrier*x[j]**2 + barrier#+ 0.5*x[j] + 1 + 0.01*np.random.rand()
-    mass[j] = x[j]**2 + 1.0
+
+# for j in range(0, len(x)):
+#     pointsToInterpolate[j] = barrier*x[j]**4 - 2.0*barrier*x[j]**2 + barrier#+ 0.5*x[j] + 1 + 0.01*np.random.rand()
+#     mass[j] = x[j]**2 + 1.0
 
 # print(res.x)
 # plt.plot(profile[:,0],(profile[:,1]), "o")
@@ -68,7 +69,7 @@ for j in range(0, len(x)):
 
 #savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 5.33*profile[:,3]**0, 1.*mass**0], header='x F F/kT gamma mass') #no Umbrella
 #savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 5.12*profile[:,3]**0, 1.03*mass**0], header='x F F/kT gamma mass') #ev 10
-savetxt('iniPROFILE', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 0.1*x**0, 1.5*mass**0], header='x F F/kT gamma mass') #ev 25
+savetxt('iniPROFILEGLE', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 0.01*x**0, 1.*mass**0], header='x F F/kT gamma mass') #ev 25
 
 
 

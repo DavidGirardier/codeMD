@@ -242,18 +242,18 @@ gamma = 1.
 
 mass = 1.5
 kT = 1.
-x0 = 0.
+x0 = -1.
 
 dt=0.001
-t=1.
+t=100.
 PrintTraj = True
 lenght = int(t/dt) + 1
 
-numberOfTraj = 500.
+numberOfTraj = 5.
 
 fraction = 5.
 
-every = 10
+every = 5
 
 alltime = []
 alltraj = []
@@ -295,7 +295,7 @@ for j in range(int(numberOfTraj)):
 
         countFrac = countFrac + 1
         #outputName='100TrajVECg' + str(gamma) + 'm' + str(mass) + '_' + str(countFrac)
-        outputName='500TrajMilsteing_gammasmallpos'+ 'm' + str(mass) + '_' + str(countFrac)
+        outputName='Well_5TrajMilstein_gammasmallpos'+ 'm' + str(mass) + '_' + str(countFrac)
         #outputName='Eulerm120g1_5DW7FullkTdt0_001x20_Ergodic_'+str(countFrac)
         np.savetxt(outputName, np.c_[alltime,alltraj,allvel], fmt='%1.8E')
 

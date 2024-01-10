@@ -35,9 +35,9 @@ def differencewithPowerSeries(a, x, pointsToInterpolate):
 # start = 0.9505
 # x = arange(start,end+(end-start)/1000.,(end-start)/1000.)
 
-ngrid = 1000
-start = 0.945226316 #500Colvar
-end = 1.80057894
+# ngrid = 1000
+# start = 0.945226316 #500Colvar
+# end = 1.80057894
 
 # ngrid = 1000 #10ns well Nobaro
 # start=0.94
@@ -61,6 +61,11 @@ end = 1.80057894
 # start = 0.945999206 #40*220ps
 # end = 2.93260229
 
+#### try
+ngrid = 1000
+start = 0.949
+end = 1.2
+
 x = arange(start,end+(end-start)/1000.,(end-start)/1000.)
 
 
@@ -77,4 +82,4 @@ print(x)
 #savetxt('iniPROFILEFULL', c_[x, pointsToInterpolate, pointsToInterpolate, 0.01*profile[:,3], mass], header='x F F/kT gamma mass')
 #savetxt('iniPROFILEFULL', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 1.*profile[:,3]**0, mass], header='x F F/kT gamma mass')
 #savetxt('iniPROFILEFULL', c_[x, 0.*x, 0.*x, 0.1*x**0, 172.08*x**0], header='x F F/kT gamma mass') #ev100
-savetxt('iniPROFILEFULL', c_[x, 0.*x, 0.*x, 0.1*x**0, 147.67*x**0], header='x F F/kT gamma mass') #ev1 k linear fit
+savetxt('iniPROFILEFULL', c_[x, 0.*x, 0.*x, 0.1*x**0, 14767.*x**0], header='x F F/kT gamma mass') #ev1 k linear fit

@@ -4,7 +4,7 @@ from scipy.spatial.distance import cdist
 from scipy.optimize import linear_sum_assignment
 
 
-inputfile = 'ProfLessOpti5Loop_fraction500TrajMilsteing_gammasmallposm1_newdt0_005'
+inputfile = 'ProfFinalOpti5Loop_fraction500traj2ps_newdt0_1'
 
 
 fractions = 5

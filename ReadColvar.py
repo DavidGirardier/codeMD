@@ -1,7 +1,7 @@
 import numpy as np
 
 
-inputfile = '500TrajMilsteing_gammasmallposm1'
+inputfile = '500traj2ps'
 trajectories = np.loadtxt(inputfile)
 
 IsVel = False
@@ -9,9 +9,9 @@ IsVel = False
 alltime = []
 alltraj = []
 allvel = []
-t = 1.
-dtIni = 0.001
-dtFinal = 0.005
+t = 1.9999
+dtIni = 0.0001
+dtFinal = 0.001
 numberTraj = 500
 time = trajectories[:,0].reshape(numberTraj, int(t/dtIni)+1)
 traj = trajectories[:,1].reshape(numberTraj, int(t/dtIni)+1)
