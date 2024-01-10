@@ -35,9 +35,9 @@ gamma_std_curve = np.std(gammas, axis=0)
 outputName = 'MeanAndVarFE'+'_'+inputfile
 print(outputName)
 #print(outputName)
-np.savetxt(outputName, np.c_[q,FE_mean_curve,FE_std_curve], fmt='%1.8E')
+np.savetxt(outputName, np.c_[q,FE_mean_curve,FE_std_curve/fractions], fmt='%1.8E')
 outputName = 'MeanAndVarGamma'+'_'+inputfile
-np.savetxt(outputName, np.c_[q,gamma_mean_curve,gamma_std_curve], fmt='%1.8E')
+np.savetxt(outputName, np.c_[q,gamma_mean_curve,gamma_std_curve/fractions], fmt='%1.8E')
 #np.savetxt(outputName, np.c_[q,], fmt='%1.8E')
 
 
