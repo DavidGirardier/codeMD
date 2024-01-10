@@ -2,22 +2,33 @@ import numpy as np
 import math
 from typing import List, TypeVar, Tuple, Dict, Set
 
+from scipy.fftpack import fft, ifft, ifftshift
 
-def extractNoise(posp1, pos, posm1, time_resolution, prof):
 
-    gamma = 1.
-    mass = 1.
-    force = 0.
-    recovered_noise = (pos - posm1)/time_resolution - (1.0 -  gamma*time_resolution/2.0)*(posp1 - posm1)/time_resolution - 0.5*time_resolution*force/mass
+
+def autocorrelationFFT(x):
+    xp = ifftshift((x - np.average(x))/np.std(x))
+    n, = xp.shape
+    xp = np.r_[xp[:n//2], np.zeros_like(xp), xp[n//2:]]
+    f = fft(xp)
+    p = np.absolute(f)**2
+    pi = ifft(p)
+    return np.real(pi)[:n//2]/(np.arange(n//2)[::-1]+n//2)
+
+
 
 
 kT=1.0
 
 
-input_traj = '500TrajVECg_pos_1'
+#input_traj = 'fraction500TrajMilsteing_gammasmallposm1_newdt0_005_2'
+input_traj = 'expKernel10ns_newdt0_02'
 trajectories = np.loadtxt(input_traj)
 
-input_prof = 'ProfGammaVECFractiondt0_001_1'
+#input_prof = 'ProfLessOpti5Loop_fraction500TrajMilsteing_gammasmallposm1_newdt0_005_2'
+input_prof = 'ProfexpKernel10ns_newdt0_02_Loop_5'
+#input_prof = 'ProfGammaVECFractiondt0_001_5Loop_1'
+#input_prof = 'Proffraction500TrajMilsteing_gammasmallposm1_newdt0_005_1Loop_1'
 profile = np.loadtxt(input_prof)
 
 pos = profile[:,0]
@@ -44,7 +55,7 @@ for i in range(1,len(profile)-1):
 
 t = trajectories[:,0]
 x = trajectories[:,1]
-v = trajectories[:,2]
+#v = trajectories[:,2]
 
 dt = trajectories[1,0]-trajectories[0,0]
 
@@ -61,7 +72,7 @@ for i in range(1,len(t)-1):
         recovered_noise = ((x[i+1] - x[i])/dt - 
                            (1.0 -  gamma[index_pos]*dt/2.0)*(x[i+1] - x[i-1])/(2.*dt)
                            + 0.5*dt*dFE[index_pos]/mass)*2.0/sigma
-        #print(v[i-1]-(x[i+1] - x[i-1])/dt)
+
         # recovered_noise = ((x[i+1] - x[i])/dt - 
         #                    (1.0 -  gamma[index_pos]*dt/2.0)*v[i] 
         #                    + 0.5*dt*dFE[index_pos]/mass)*2.0/sigma
@@ -72,12 +83,19 @@ print(np.mean(recovered_noise_list))
 print(np.var(recovered_noise_list))
 
 
+
+noise_corr = autocorrelationFFT(recovered_noise_list)
+
+#print(noise_corr)
+
+
 import matplotlib.pyplot as plt
-histo_noise = np.histogram(recovered_noise_list, np.arange(min(recovered_noise_list),max(recovered_noise_list),0.1))
+histo_noise = np.histogram(recovered_noise_list, np.arange(min(recovered_noise_list),max(recovered_noise_list),0.2))
 plt.plot(histo_noise[1][:-1],histo_noise[0]/(len(recovered_noise_list)))
 plt.show()
 
-
+plt.plot(np.arange(len(noise_corr[0:100])),noise_corr[0:100])
+plt.show()
 
     
     
