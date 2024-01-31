@@ -1,8 +1,8 @@
 import numpy as np
 
-numberOfFile = 5
-tFile = 2000.
-dt = 0.0001
+numberOfFile = 10
+tFile = 10000.
+dt = 0.001
 gamma=2.0
 mass_anal = 1480.
 nLine = int(tFile/dt +1)
@@ -14,7 +14,7 @@ fromPosorVel = 'q'
 maxQ=-1000.
 minQ=1000.
 #everyList = [1,2,3,4,5,6,7,8,9,10,20,50,100,200,250,300,350,400,450,500,600,700,800,900,1000]
-everyList = [1,10,100,200,300,400]
+everyList = [1]
 #everyList = np.arange(1,51,5)
 matrixMass=[]
 mass = []
@@ -26,7 +26,7 @@ if fromPosorVel == 'q':
         trajectory = np.loadtxt(inputfile, skiprows=nLine*j, max_rows=nLine) 
         #print(trajectory)
         for every in everyList:
-        
+            
         
             for k in range(1+every,len(trajectory)-1*every,every):
                 
@@ -86,7 +86,7 @@ print(matrixMass)
 mean_curve = np.mean(matrixMass, axis=0)
 
 # Compute the variance of the aligned curves
-variance_curve = np.var(matrixMass, axis=0)/np.sqrt(numberOfFile)
+variance_curve = np.std(matrixMass, axis=0)/np.sqrt(numberOfFile)
 #outputName = 'massCorrg'+str(gamma)+'_'+ inputfile
 outputName = 'mass'+'_'+ inputfile
 np.savetxt(outputName, np.c_[everyList,mean_curve,variance_curve], fmt='%1.6E')
