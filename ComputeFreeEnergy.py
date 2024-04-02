@@ -1,11 +1,11 @@
 from ctypes import sizeof
 import numpy as np
 import matplotlib.pyplot as plt
-inputfile = '20Asso5nsdt0_01'
+inputfile = 'ergo7kT4x_memdoubleexpom1.0'
 trajectories = np.loadtxt(inputfile)
 print(np.mean(trajectories[:,1]))
 numberBins = 100
-dx=0.001
+dx=0.01
 minPos = min(trajectories[:,1])
 maxPos = max(trajectories[:,1])
 histo_pos = np.histogram(trajectories[:,1], np.arange(minPos,maxPos,dx))

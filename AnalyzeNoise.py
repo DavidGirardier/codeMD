@@ -21,18 +21,20 @@ histo_noise_matrix = []
 noise_corr_matrix = []
 
 kT=1.0
+dx=0.2
 numberOfSample = 5
 for sample in range(1,numberOfSample+1):
     
     #input_traj = 'fraction500TrajMilsteing_gammasmallposm1_newdt0_005_2'
-    input_traj = 'fraction500traj2ps_newdt0_02'
+    input_traj = 'fractionLine_500TPS_newdt0.1'
     trajectories = np.loadtxt(input_traj+'_'+str(sample))
 
     #input_prof = 'ProfLessOpti5Loop_fraction500TrajMilsteing_gammasmallposm1_newdt0_005_2'
-    input_prof = 'Proffraction500traj2ps_newdt0_02'
+    input_prof = 'ProfmC12FinalOpti5Loop_fractionLine_500TPS_newdt0.1'
     #input_prof = 'ProfGammaVECFractiondt0_001_5Loop_1'
     #input_prof = 'Proffraction500TrajMilsteing_gammasmallposm1_newdt0_005_1Loop_1'
-    profile = np.loadtxt(input_prof+'_'+str(sample)+'Loop_5')
+    profile = np.loadtxt(input_prof+'_'+str(sample))
+    #profile = np.loadtxt(input_prof+'_'+str(sample)+'Loop_5')
 
     pos = profile[:,0]
     pos_min = profile[0,0]
@@ -50,7 +52,7 @@ for sample in range(1,numberOfSample+1):
     dgamma[0] = (gamma[1]-gamma[0])/dpos
     dgamma[-1] = (gamma[-1]-gamma[-2])/dpos
 
-    mass = profile[0,4]
+    mass = profile[:,4]
 
     for i in range(1,len(profile)-1):
         dFE[i] = (FE[i+1]-FE[i-1])/(2.*dpos)
@@ -70,20 +72,20 @@ for sample in range(1,numberOfSample+1):
         if (t[i-1]<t[i]) and (t[i]<t[i+1]):
             index_pos = math.floor((x[i]-pos_min)/dpos)
 
-            sigma = np.sqrt(2.*dt*kT*gamma[index_pos]/mass)
+            sigma = np.sqrt(2.*dt*kT*gamma[index_pos]/mass[index_pos])
 
             recovered_noise = ((x[i+1] - x[i])/dt - 
                             (1.0 -  gamma[index_pos]*dt/2.0)*(x[i+1] - x[i-1])/(2.*dt)
-                            + 0.5*dt*dFE[index_pos]/mass)*2.0/sigma
+                            + 0.5*dt*dFE[index_pos]/mass[index_pos])*2.0/sigma
 
             # recovered_noise = ((x[i+1] - x[i])/dt - 
             #                    (1.0 -  gamma[index_pos]*dt/2.0)*v[i] 
-            #                    + 0.5*dt*dFE[index_pos]/mass)*2.0/sigma
+            #                    + 0.5*dt*dFE[index_pos]/mass[index_pos])*2.0/sigma
             recovered_noise_list.append(recovered_noise)
 
 
-    print(np.mean(recovered_noise_list))
-    print(np.var(recovered_noise_list))
+    #print(np.mean(recovered_noise_list))
+    #print(np.var(recovered_noise_list))
 
     recovered_noise_matrix.append(recovered_noise_list)
 
@@ -97,8 +99,12 @@ for sample in range(1,numberOfSample+1):
 
 
     # histo_noise = np.histogram(recovered_noise_list, np.arange(min(recovered_noise_list),max(recovered_noise_list),0.2))
-    histo_noise = np.histogram(recovered_noise_list, np.linspace(-3,3,30),0.2)
-    histo_noise_matrix.append(histo_noise[0]/(len(recovered_noise_list)))
+    histo_noise = np.histogram(recovered_noise_list, np.linspace(-3,3,30),dx)
+    integral = np.trapz(histo_noise[0],dx=dx)
+
+    histo_noise_matrix.append(histo_noise[0]/(len(recovered_noise_list)*dx))
+    # plt.plot(histo_noise[1][:-1],histo_noise[0]/(integral))
+    # plt.show()
 
 
 mean_histo_noise = np.mean(histo_noise_matrix,axis=0)
@@ -118,6 +124,8 @@ np.savetxt(outputName, np.c_[np.arange(len(mean_noise_corr)),mean_noise_corr, st
 
 #print(np.var(recovered_noise_matrix,axis=1))
 print('Mean = ', np.mean(np.mean(recovered_noise_matrix,axis=1)))
+print('Err on mean = ', np.std(np.mean(recovered_noise_matrix,axis=1))/np.sqrt(numberOfSample))
+
 print('Var = ',np.mean(np.var(recovered_noise_matrix,axis=1)))
 print('Err on var = ', np.std(np.var(recovered_noise_matrix,axis=1))/np.sqrt(numberOfSample))
 
@@ -126,6 +134,18 @@ print('<G(t)G(t+1)> = ', mean_noise_corr[1])
 arr = np.array(noise_corr_matrix)
   
 print('Err on corr = ',np.std(arr[:,1])/np.sqrt(numberOfSample)) 
+
+with open('MeanAndErrPrint'+'_'+input_prof, 'a') as the_file:
+    the_file.write('Mean = ' + str(np.mean(np.mean(recovered_noise_matrix,axis=1))) + '\n')
+    the_file.write('Err on mean = ' + str(np.std(np.mean(recovered_noise_matrix,axis=1))/np.sqrt(numberOfSample)) + '\n')
+
+    the_file.write('Var = ' + str(np.mean(np.var(recovered_noise_matrix,axis=1))) + '\n')
+    the_file.write('Err on var = ' + str(np.std(np.var(recovered_noise_matrix,axis=1))/np.sqrt(numberOfSample)) + '\n')
+
+    the_file.write('<G(t)G(t+1)> = ' + str(mean_noise_corr[1]) + '\n')  
+    arr = np.array(noise_corr_matrix)
+    the_file.write('Err on corr = ' + str(np.std(arr[:,1])/np.sqrt(numberOfSample)) + '\n') 
+
 
 
     

@@ -36,8 +36,8 @@ x = profile[:,0]
 
 
 ngrid = 1000
-start = -1.5
-end = 1.5
+start = -0.4
+end = 0.4
 x = arange(start,end+(end-start)/1000.,(end-start)/1000.)
 
 #x = arange(-1.5,1.5,0.01)
@@ -69,7 +69,7 @@ mass = zeros(len(x))
 
 #savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 5.33*profile[:,3]**0, 1.*mass**0], header='x F F/kT gamma mass') #no Umbrella
 #savetxt('iniPROFILE', c_[x, pointsToInterpolate, pointsToInterpolate, 5.12*profile[:,3]**0, 1.03*mass**0], header='x F F/kT gamma mass') #ev 10
-savetxt('iniPROFILEGLE', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 0.01*x**0, 1.*mass**0], header='x F F/kT gamma mass') #ev 25
+savetxt('iniPROFILEGLEm1500', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 0.01*x**0, 1500.*mass**0], header='x F F/kT gamma mass') #ev 25
 
 
 

@@ -1,5 +1,5 @@
 import numpy as np
-inputfile = '500traj2ps_newdt0_001'
+inputfile = '500traj2ps_newdt0_06'
 trajectories = np.loadtxt(inputfile)
 
 fractions = 5

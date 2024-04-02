@@ -1,7 +1,7 @@
 import numpy as np
 
 
-inputfile = '500colvar_c60_precise_newdt0_1'
+inputfile = 'ergoHarmo1ns'
 trajectories = np.loadtxt(inputfile)
 
 
@@ -9,11 +9,11 @@ trajectories = np.loadtxt(inputfile)
 alltime = []
 alltraj = []
 allvel = []
-t = 20.0
-newTime = 2.0
+t = 1.9999
+newTime = 0.9
 
-dtIni = 0.1
-dtFinal = 0.1
+dtIni = 0.0001
+dtFinal = 0.0001
 
 numberTraj = 500
 time = trajectories[:,0].reshape(numberTraj, int(t/dtIni)+1)

@@ -20,9 +20,9 @@ def autocorrelation(data):
     return acorr
 
 def ForceDoubleWell(x:float):
-    barrier = 10.
-    Force = -4.0*barrier*x**3 + 4.0*barrier*x
-    # Force = -100*(x+1)
+    # barrier = 10.
+    # Force = -4.0*barrier*x**3 + 4.0*barrier*x
+    Force = -9.81
     # alpha = 0.
     # Force = -2.*x + 3.*alpha*x*x
     #Force=0.0
@@ -34,14 +34,16 @@ def gammaPos(x:float):
     gammaq = barrier*x**4 - 2.0*barrier*x**2 +2.*barrier
 
 
-    return gammaq
+    #return gammaq
+    return 1.0
 
 def deriveeGamma(x:float):
     barrier = 1.
     gammaq = 4*barrier*x**3 - 4.0*barrier*x
 
 
-    return gammaq
+    #return gammaq
+    return 0.0
 
 def CicottiVandenEijdenFP(gamma:float, mass:float, kT:float, initialPosition:float, initialVelocity:float, timeStep:float, totalTime:float):
     trajectory:List[float] = []
@@ -118,6 +120,7 @@ def CicottiVandenEijdenGammaPos(mass:float, kT:float, initialPosition:float, ini
 def EulerMaruyamaFP(gamma:float, mass:float, kT:float, initialPosition:float, initialVelocity:float, timeStep:float, totalTime:float):
     trajectory:List[float] = []
     velocities:List[float] = []
+    acceleration=[]
     time:List[float] = []
     g:List[float] = []
 
@@ -128,16 +131,18 @@ def EulerMaruyamaFP(gamma:float, mass:float, kT:float, initialPosition:float, in
     for i in range(int(totalTime/timeStep)+1):
         trajectory.append(x)
         velocities.append(v)
+
         time.append(i*timeStep)
 
         randomNumber = np.random.normal()
         x_new = x + v*timeStep
         v_new = v - gamma*v*timeStep + timeStep*ForceDoubleWell(x)/mass + np.sqrt(timeStep)*sigma*randomNumber
-
+        a = -gamma*v + ForceDoubleWell(x) + sigma*randomNumber
+        acceleration.append(a)
         g.append(randomNumber)
         x = x_new
         v = v_new
-    return time, trajectory, velocities, g
+    return time, trajectory, velocities, g, acceleration
 
 def Milstein(mass:float, kT:float, initialPosition:float, initialVelocity:float, timeStep:float, totalTime:float):
     trajectory:List[float] = []
@@ -238,26 +243,27 @@ def OBABO(gamma:float, mass:float, kT:float, initialPosition:float, initialVeloc
 
     return time, trajectory, velocities, g1, g2
 
-gamma = 1.
+gamma = 0.1
 
-mass = 1.5
+mass = 1.
 kT = 1.
-x0 = -1.
+x0 = -0.
 
 dt=0.001
 t=100.
 PrintTraj = True
 lenght = int(t/dt) + 1
 
-numberOfTraj = 5.
+numberOfTraj = 1.
 
-fraction = 5.
+fraction = 1.
 
-every = 5
+every = 1
 
 alltime = []
 alltraj = []
 allvel = []
+allacc = []
 allg1 = []
 allg2 = []
 x_final = []
@@ -276,15 +282,16 @@ for j in range(int(numberOfTraj)):
 
     
     v0 = np.sqrt(kT/mass) * np.random.normal()
-    #time, traj, vel, g1 = EulerMaruyamaFP(gamma, mass, kT, x0, v0, dt, t)
-    #time, traj, vel, g1, _ = CicottiVandenEijdenFP(gamma, mass, kT, x0, v0, dt, t)
+    time, traj, vel, g1, acc = EulerMaruyamaFP(gamma, mass, kT, x0, v0, dt, t)
+    #time, traj, vel, g1 = CicottiVandenEijdenFP(gamma, mass, kT, x0, v0, dt, t)
     #time, traj, vel, g1, _ = CicottiVandenEijdenGammaPos(mass, kT, x0, v0, dt, t)
-    time, traj, vel, g1 = Milstein(mass, kT, x0, v0, dt, t)
+    #time, traj, vel, g1 = Milstein(mass, kT, x0, v0, dt, t)
 
     if PrintTraj == True:
         alltime = alltime + time[::every]
         alltraj = alltraj + traj[::every]
         allvel = allvel + vel[::every]
+        allacc = allacc + acc[::every]
         # allg1 = allg1 + g1
         #allg2 = allg2 + g2
     x_final.append(traj[-1])
@@ -294,10 +301,11 @@ for j in range(int(numberOfTraj)):
     if (j+1) % (int(numberOfTraj/fraction)) == 0:
 
         countFrac = countFrac + 1
-        #outputName='100TrajVECg' + str(gamma) + 'm' + str(mass) + '_' + str(countFrac)
-        outputName='Well_5TrajMilstein_gammasmallpos'+ 'm' + str(mass) + '_' + str(countFrac)
+        #outputName='500TrajVECg' + str(gamma) + 'm' + str(mass) + '_' + str(countFrac)
+        #outputName='Well_5TrajMilstein_gammasmallpos'+ 'm' + str(mass) + '_' + str(countFrac)
         #outputName='Eulerm120g1_5DW7FullkTdt0_001x20_Ergodic_'+str(countFrac)
-        np.savetxt(outputName, np.c_[alltime,alltraj,allvel], fmt='%1.8E')
+        outputName='Euler9_81xg'+str(gamma)
+        np.savetxt(outputName, np.c_[alltime,alltraj,allvel,allacc], fmt='%1.8E')
 
 
         v2 = [v*v for v in allvel]
@@ -306,6 +314,7 @@ for j in range(int(numberOfTraj)):
         print('<v> = ' + str(np.mean(allvel)) + '\t <v^2> = ' + str(np.mean(v2)))
         print('mkT = 1/<v^2> = ' + str(1./(np.mean(v2))) + '\t input mkT = ' + str(mass*kT))
         print('<x^2> - <x>^2 = ' + str(np.mean(x2) - np.mean(x)*np.mean(x)))
+        print('<a> =' + str(np.mean(acc)))
         alltime = []
         alltraj = []
         allvel = []

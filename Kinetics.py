@@ -129,41 +129,46 @@ def CicottiVandenEijdenFP(profile, kT:float, initialPosition:float, initialVeloc
             return i*timeStep
         
     return i*timeStep
-
-beg_input = "ProfFixedGM4_53and1_25_fraction500TrajVECDW10m1g5t2psdt0_001_newdt0_05"
-MFPT=[]
-numberOfSample = 5
-for k in range(1,numberOfSample+1):
-    inputfile = beg_input + '_' + str(int(k))
-    profile = np.loadtxt(inputfile)
-
-
-    kT=1.
-    mass = profile[1,4]
-    print(mass)
-    x0 = -1.0
-    xmax = 1.0
-    v0 = np.sqrt(kT/mass) * np.random.normal()
-    dt = 0.001
-    maxTime = 100000.
-    timeEscape = []
-    
-    
-    for i in range(100):
-        print(i)
-        #time = Milstein(profile, kT, x0, v0, dt, maxTime)
-        time = CicottiVandenEijdenFP(profile, kT, x0, v0, dt, xmax, maxTime)
-        timeEscape.append(time)
-
-    print(np.mean(timeEscape))
-    MFPT.append(np.mean(timeEscape))
-    print(inputfile)
-
-print(beg_input)
-print('mean MFPT : ' + str(np.mean(MFPT)))
-print('std dev MFPT : ' + str(np.sqrt(np.var(MFPT)/numberOfSample)))
+for time in [0.1,0.2,0.3,0.4,0.5,1.0]:
+    beg_input = "ProfTMFinalOpti5Loop_fractionLine_500TPS_newdt"+str(time)
+    MFPT=[]
+    numberOfSample = 5
+    for k in range(1,numberOfSample+1):
+        inputfile = beg_input + '_' + str(int(k))
+        profile = np.loadtxt(inputfile)
 
 
+        kT=1.
+        mass = profile[1,4]
+        print(mass)
+        x0 = 1.0
+        xmax = 1.4
+        v0 = np.sqrt(kT/mass) * np.random.normal()
+        dt = 0.001
+        maxTime = 100000.
+        timeEscape = []
+        
+        
+        for i in range(100):
+            print(i)
+            time = Milstein(profile, kT, x0, v0, dt, maxTime)
+            #time = CicottiVandenEijdenFP(profile, kT, x0, v0, dt, xmax, maxTime)
+            timeEscape.append(time)
 
-# outputName='TrajReconstructed'
-# np.savetxt(outputName, np.c_[time,traj], fmt='%1.8E')
+        print(np.mean(timeEscape))
+        MFPT.append(np.mean(timeEscape))
+        print(inputfile)
+
+    print(beg_input)
+    print('mean MFPT : ' + str(np.mean(MFPT)))
+    print('std dev MFPT : ' + str(np.sqrt(np.var(MFPT)/numberOfSample)))
+
+    with open('Kinetics'+'_'+beg_input, 'a') as the_file:
+        the_file.write('mean MFPT : ' + str(np.mean(MFPT)) + '\n')
+        the_file.write('std dev MFPT : ' + str(np.sqrt(np.var(MFPT)/numberOfSample)))
+        
+
+
+
+    # outputName='TrajReconstructed'
+    # np.savetxt(outputName, np.c_[time,traj], fmt='%1.8E')

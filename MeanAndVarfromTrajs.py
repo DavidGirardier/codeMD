@@ -4,7 +4,7 @@ from scipy.spatial.distance import cdist
 from scipy.optimize import linear_sum_assignment
 
 
-inputfile = 'ProfFinalOpti5Loop_fraction500traj2ps_newdt0_1'
+inputfile = 'ProfFinalOpti5Loop_fractionLine_500TPS_newdt1.0'
 
 
 fractions = 5
@@ -15,10 +15,11 @@ FEs = []
 gammas = []
 for i in range(1,fractions+1):
     inputfilefrac = inputfile+'_'+str(i)
-
+    print(i)
     profile = np.loadtxt(inputfilefrac)
-    #print(min(profile[:500,1]))
-    FEs.append(profile[:,1])
+    #print(min(profile[400:600,1]))
+    print(min(profile[:200,1]))
+    #FEs.append(profile[:,1])
     FEs.append(profile[:,1]- min(profile[:200,1]))
     gammas.append(profile[:,3])
 FEs = np.array(FEs)
@@ -35,9 +36,9 @@ gamma_std_curve = np.std(gammas, axis=0)
 outputName = 'MeanAndVarFE'+'_'+inputfile
 print(outputName)
 #print(outputName)
-np.savetxt(outputName, np.c_[q,FE_mean_curve,FE_std_curve/fractions], fmt='%1.8E')
+np.savetxt(outputName, np.c_[q,FE_mean_curve,FE_std_curve/np.sqrt(fractions)], fmt='%1.8E')
 outputName = 'MeanAndVarGamma'+'_'+inputfile
-np.savetxt(outputName, np.c_[q,gamma_mean_curve,gamma_std_curve/fractions], fmt='%1.8E')
+np.savetxt(outputName, np.c_[q,gamma_mean_curve,gamma_std_curve/np.sqrt(fractions)], fmt='%1.8E')
 #np.savetxt(outputName, np.c_[q,], fmt='%1.8E')
 
 

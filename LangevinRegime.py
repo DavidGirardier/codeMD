@@ -33,13 +33,13 @@ def autocorrelationFFT(x):
 
 # inputfile = input('Trajectory File:')
 # trajectories = np.loadtxt(inputfile, max_rows=2)
-inputfile= 'trajectories.dat'
+inputfile= 'norm_ucw'
 unzoomedFactor = 1
-dt = 0.0001
+dt = 0.001
 
 #dt=0.001
-numberOfTraj = 4
-tFile = 250.
+numberOfTraj = 5
+tFile = 170.0
 nLine = tFile/dt
 newdt = dt * unzoomedFactor
 
@@ -67,8 +67,8 @@ print([matrixXAC[i][-1] for i in range(numberOfTraj)])
 print(np.var([matrixXAC[i][-1] for i in range(numberOfTraj)]))
 XAC = np.mean(matrixXAC, axis=0)
 VAC = np.mean(matrixVAC, axis=0)
-XACvariance = np.var(matrixXAC, axis=0)
-VACvariance = np.var(matrixVAC, axis=0)
+XACvariance = np.std(matrixXAC, axis=0)
+VACvariance = np.std(matrixVAC, axis=0)
 #np.savetxt(outputName, np.c_[[t*newdt for t in range(int(tFile/newdt) + 1)], XAC, VAC], fmt='%1.8E')
 outputName='VAC'+inputfile+'unzoomed'+str(unzoomedFactor)
 np.savetxt(outputName, np.c_[[t*newdt for t in range(len(VAC))], VAC, VACvariance/np.sqrt(numberOfTraj)], fmt='%1.8E')
@@ -99,8 +99,8 @@ def funcVel(x, g, w):
 
 inputname = inputfile+'unzoomed'+str(unzoomedFactor)
 # Load the data from a file
-dt=0.0001
-tmax=200.
+#dt=0.00001
+tmax=10.
 nLine = int(tmax/dt)
 
 
@@ -111,7 +111,7 @@ x = data[:, 0]
 y = data[:, 1]
 
 # Fit the curve to the function
-popt, pcov = curve_fit(funcPos, x, y, p0=[5.,8.])
+popt, pcov = curve_fit(funcPos, x, y, p0=[0.,0.])
 
 # Generate the fitted curve
 x_fit = np.linspace(x.min(), x.max(), 100)
