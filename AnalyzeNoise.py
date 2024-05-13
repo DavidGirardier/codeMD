@@ -26,11 +26,11 @@ numberOfSample = 5
 for sample in range(1,numberOfSample+1):
     
     #input_traj = 'fraction500TrajMilsteing_gammasmallposm1_newdt0_005_2'
-    input_traj = 'fractionLine_500TPS_newdt0.1'
+    input_traj = 'fractionfiltered_500tps_best_freq_20_newdt0.1'
     trajectories = np.loadtxt(input_traj+'_'+str(sample))
 
     #input_prof = 'ProfLessOpti5Loop_fraction500TrajMilsteing_gammasmallposm1_newdt0_005_2'
-    input_prof = 'ProfmC12FinalOpti5Loop_fractionLine_500TPS_newdt0.1'
+    input_prof = 'ProfFinalOpti5Loop_fractionfiltered_500tps_best_freq_20_newdt0.1'
     #input_prof = 'ProfGammaVECFractiondt0_001_5Loop_1'
     #input_prof = 'Proffraction500TrajMilsteing_gammasmallposm1_newdt0_005_1Loop_1'
     profile = np.loadtxt(input_prof+'_'+str(sample))

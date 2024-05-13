@@ -33,13 +33,13 @@ def autocorrelationFFT(x):
 
 # inputfile = input('Trajectory File:')
 # trajectories = np.loadtxt(inputfile, max_rows=2)
-inputfile= 'norm_ucw'
+inputfile= 'SIZE.dat'
 unzoomedFactor = 1
-dt = 0.001
+dt = 0.002
 
 #dt=0.001
-numberOfTraj = 5
-tFile = 170.0
+numberOfTraj = 4
+tFile = 50.0
 nLine = tFile/dt
 newdt = dt * unzoomedFactor
 
@@ -100,7 +100,7 @@ def funcVel(x, g, w):
 inputname = inputfile+'unzoomed'+str(unzoomedFactor)
 # Load the data from a file
 #dt=0.00001
-tmax=10.
+tmax=5.
 nLine = int(tmax/dt)
 
 

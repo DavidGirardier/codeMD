@@ -1,7 +1,7 @@
 import numpy as np
 
 
-inputfile = 'Line_500TPS'
+inputfile = 'filtered_500tps_best_freq_20'
 trajectories = np.loadtxt(inputfile)
 
 IsVel = False
@@ -13,7 +13,7 @@ t = 20.0
 dtIni = 0.01
 numberTraj = 500
 #dtList = [0.005,0.01,0.02,0.05,0.1]
-dtList = [0.01,0.1,0.2,0.3,0.4,0.5,1.0]
+dtList = [0.02,0.04,0.1]
 for dtime in dtList :
     alltime = []
     alltraj = []

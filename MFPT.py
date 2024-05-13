@@ -1,7 +1,7 @@
 import numpy as np
 
 
-inputfile = 'COLVAR500ns'
+inputfile = 'cv'
 trajectory = np.loadtxt(inputfile)
 #trajectory = np.loadtxt(inputfile, max_rows=1000000)
 
@@ -9,7 +9,7 @@ trajectory = np.loadtxt(inputfile)
 numberOfFile = 1
 #tFile = 500000.0
 #t = numberOfFile*tFile
-dt = 0.01
+dt = 1.0
 #nLine = int(tFile/dt)
 countTransition = 0
 oldpos = ''
@@ -43,8 +43,9 @@ for j in range(numberOfFile):
     pos = ''
     trajectory = []
 print(timeList)
-print(np.mean(timeList))
-print(np.sqrt(np.var(timeList) / len(timeList)))
-# print('Number of Transtition = ' + str(countTransition))
-# print('MFPT = ' + str(t/countTransition))
+print('MFPT = ' + str(np.mean(timeList)) + ' +/- ' + str(np.sqrt(np.var(timeList) / len(timeList))) + ' ps')
+
+with open('MFPT'+'_'+inputfile, 'a') as the_file:
+    the_file.write('MFPT = ' + str(np.mean(timeList)) + ' +/- ' + str(np.sqrt(np.var(timeList) / len(timeList))) + ' ps')
+
 

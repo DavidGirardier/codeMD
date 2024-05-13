@@ -1,8 +1,8 @@
 import numpy as np
 
-file = open("Analysis.txt","r")
-
-
+file = open("thermoNVE.txt","r")
+thermo = np.loadtxt('thermoNVE.txt')
+print(np.std(thermo[:,4]))
 
 fileLines = file.readlines()
 
@@ -29,12 +29,12 @@ for line in fileLines:
     splitted = line.split()
     splitted = [float(i) for i in splitted]
     #print(splitted[0])
-    sum_tot = sum_tot + splitted[1]
-    sum_tot2 = sum_tot2 + splitted[1]**2
-    sum_kin = sum_kin + splitted[2]
-    sum_kin2 = sum_kin2 + splitted[2]**2
-    sum_pot = sum_pot + splitted[3]
-    sum_pot2 = sum_pot2 + splitted[3]**2
+    sum_tot = sum_tot + splitted[5]
+    sum_tot2 = sum_tot2 + splitted[5]**2
+    sum_kin = sum_kin + splitted[3]
+    sum_kin2 = sum_kin2 + splitted[3]**2
+    sum_pot = sum_pot + splitted[4]
+    sum_pot2 = sum_pot2 + splitted[4]**2
     #print(str(sum_tot)+ '\t')
     #print(str(sum_tot2) + '\n')
 

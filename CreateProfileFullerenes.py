@@ -83,4 +83,4 @@ print(x)
 #savetxt('iniPROFILEFULL', c_[x, 0.*pointsToInterpolate, 0.*pointsToInterpolate, 1.*profile[:,3]**0, mass], header='x F F/kT gamma mass')
 #savetxt('iniPROFILEFULL', c_[x, 0.*x, 0.*x, 0.1*x**0, 172.08*x**0], header='x F F/kT gamma mass') #ev100
 #savetxt('iniPROFILEFULLmO1', c_[x, 0.*x, 0.*x, 0.1*x**0, 147.67*x**0], header='x F F/kT gamma mass') #ev1 k linear fit
-savetxt('iniPROFILEFULLdt70fs', c_[x, 0.*x, 0.*x, 0.1*x**0, 5.5*x**0], header='x F F/kT gamma mass') #ev1 k linear fit
+savetxt('iniPROFILEFULL_filter', c_[x, 0.*x, 0.*x, 0.1*x**0, 5.15*x**0], header='x F F/kT gamma mass') #ev1 k linear fit

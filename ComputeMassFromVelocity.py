@@ -1,6 +1,6 @@
 import numpy as np
 
-numberOfFile = 5
+numberOfFile = 1
 tFile = 170.
 dt = 0.001
 gamma=2.0
@@ -14,7 +14,7 @@ fromPosorVel = 'q'
 maxQ=-1000.
 minQ=1000.
 #everyList = [1,2,3,4,5,6,7,8,9,10,20,50,100,200,250,300,350,400,450,500,600,700,800,900,1000]
-everyList = [60,70,80]
+everyList = [1,10,100]
 #everyList = np.arange(1,51,5)
 matrixMass=[]
 mass = []

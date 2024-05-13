@@ -1,7 +1,7 @@
 from ctypes import sizeof
 import numpy as np
 import matplotlib.pyplot as plt
-inputfile = 'ergo7kT4x_memdoubleexpom1.0'
+inputfile = 'cv'
 trajectories = np.loadtxt(inputfile)
 print(np.mean(trajectories[:,1]))
 numberBins = 100
