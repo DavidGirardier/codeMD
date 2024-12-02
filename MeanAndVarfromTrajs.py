@@ -4,16 +4,16 @@ from scipy.spatial.distance import cdist
 from scipy.optimize import linear_sum_assignment
 
 
-inputfile = 'ProfFinalOpti5Loop_fractionfiltered_500tps_best_freq_20_newdt0.1'
+inputfile = 'ProfFinalOpti5Loop_10asso_NP_waternewdt0.8'
 
 
-fractions = 5
+fractions = 3
 x = []
 y = []
 z = []
 FEs = []
 gammas = []
-for i in range(1,fractions+1):
+for i in range(2,fractions+1):
     inputfilefrac = inputfile+'_'+str(i)
     print(i)
     profile = np.loadtxt(inputfilefrac)

@@ -18,13 +18,13 @@ def dFdq(x:float):
 
 # inputfile = input('Trajectory File:')
 # trajectories = np.loadtxt(inputfile, max_rows=2)
-inputfile= 'EulerDW10kTdt_0.0001_g0.5m1.0every10_1'
+inputfile= 'EulerDW10kTdt_0.0001_g0.5m10.0every10_1'
 unzoomedFactor = 1
 
 trajectory = np.loadtxt(inputfile, skiprows=0, max_rows=10)
 dt = trajectory[1,0]-trajectory[0,0]
 print(dt)
-m = 1.0
+m = 10.
 kT = 1.0
 
 
@@ -72,7 +72,7 @@ for i in range(numberOfTraj):
     # g_p = (-b + np.sqrt(b*b-4.0*a*c))/(2.*a)
     # g_m = (-b - np.sqrt(b*b-4.0*a*c))/(2.*a)
 
-gamma = 0.5052
+gamma = 0.0
 # G = (unzoomedAcc + gamma * realVel) / np.sqrt(dt)
 # unzoomedAcctest = - gamma * realVel + G
 

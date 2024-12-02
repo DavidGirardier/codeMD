@@ -33,13 +33,13 @@ def autocorrelationFFT(x):
 
 # inputfile = input('Trajectory File:')
 # trajectories = np.loadtxt(inputfile, max_rows=2)
-inputfile= 'SIZE.dat'
+inputfile= '100zetashoots_sd0_01c'
 unzoomedFactor = 1
 dt = 0.002
 
 #dt=0.001
-numberOfTraj = 4
-tFile = 50.0
+numberOfTraj = 100
+tFile = 20
 nLine = tFile/dt
 newdt = dt * unzoomedFactor
 
@@ -48,11 +48,13 @@ matrixVAC = []
 
 for i in range(numberOfTraj):
     trajectory = np.loadtxt(inputfile, skiprows=int(nLine)*i, max_rows=int(nLine)+1)
+
     unzoomedPos = [x for x in trajectory]
     unzoomedVel = [(trajectory[i+1*unzoomedFactor,1]-trajectory[i-1*unzoomedFactor,1])/(2.*dt*unzoomedFactor) for i in range(1*unzoomedFactor,len(trajectory)-1*unzoomedFactor,unzoomedFactor)]
+    #unzoomedAcc = [(unzoomedVel[i+1*unzoomedFactor,1]-unzoomedVel[i-1*unzoomedFactor,1])/(2.*dt*unzoomedFactor) for i in range(1*unzoomedFactor,len(unzoomedVel)-1*unzoomedFactor,unzoomedFactor)]
     #unzoomedVel = [(trajectory[1,1]-trajectory[0,1])/dt] + unzoomedVel + [(trajectory[-1,1]-trajectory[-2,1])/dt] 
-    #matrixXAC.append(autocorrelation(trajectory[::unzoomedFactor,1]))
-    #matrixVAC.append(autocorrelation(unzoomedVel))
+    # matrixXAC.append(autocorrelation(trajectory[::unzoomedFactor,1]))
+    # matrixVAC.append(autocorrelation(unzoomedVel))
 
     matrixXAC.append(autocorrelationFFT(trajectory[::unzoomedFactor,1]))
     matrixVAC.append(autocorrelationFFT(unzoomedVel))
@@ -100,7 +102,7 @@ def funcVel(x, g, w):
 inputname = inputfile+'unzoomed'+str(unzoomedFactor)
 # Load the data from a file
 #dt=0.00001
-tmax=5.
+tmax=2
 nLine = int(tmax/dt)
 
 

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-inputfile = 'ergoHarmo1ns'
+inputfile = '100shootingZWall_sd0_01c'
 trajectories = np.loadtxt(inputfile)
 
 
@@ -9,13 +9,13 @@ trajectories = np.loadtxt(inputfile)
 alltime = []
 alltraj = []
 allvel = []
-t = 1.9999
-newTime = 0.9
+t = 20
+newTime = 5
 
-dtIni = 0.0001
-dtFinal = 0.0001
+dtIni = 0.002
+dtFinal = 0.002
 
-numberTraj = 500
+numberTraj = 100
 time = trajectories[:,0].reshape(numberTraj, int(t/dtIni)+1)
 traj = trajectories[:,1].reshape(numberTraj, int(t/dtIni)+1)
 

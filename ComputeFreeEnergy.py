@@ -1,7 +1,10 @@
 from ctypes import sizeof
 import numpy as np
 import matplotlib.pyplot as plt
-inputfile = 'cv'
+# num = input("number :")
+# inputfile = 'cv_bf'+num
+inputfile = input('file:')
+
 trajectories = np.loadtxt(inputfile)
 print(np.mean(trajectories[:,1]))
 numberBins = 100
@@ -18,8 +21,9 @@ for i in histo_pos[0]:
     else:
         F.append(0.0)
 #F = [-np.log(x) for x in histo_pos[0] if x>0]
-
-np.savetxt('FEfromRho_' + inputfile, np.c_[histo_pos[1][:-1],F-min(F),histo_pos[0]/(len(trajectories[:,1]))], header='# x F rho')
+outputName = 'FEfromRho_' + inputfile
+np.savetxt(outputName, np.c_[histo_pos[1][:-1],F,histo_pos[0]/(len(trajectories[:,1]))], header='# x F rho')
+print(outputName)
 exit()
 print(minPos)
 print(maxPos)

@@ -1,6 +1,6 @@
 import scipy.integrate as integrate
 import numpy as np
-input_name = 'memory_true.dat'
+input_name = 'Kernel_filtered_split_zetamidpoint'
 trajectories = np.loadtxt(input_name)
 #print(trajectories[:,0])
 #int_list = []

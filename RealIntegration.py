@@ -5,15 +5,15 @@ import matplotlib.pyplot as plt
 
 
 
-traj_input = 'ergo7kT_memdoubleexpom10.0'
+traj_input = 'dcom_asso'
 #traj = np.loadtxt('../'+traj_input)
 traj = np.loadtxt(traj_input)
 
 #memory_input = '../memory/Kernel_split_' +traj_input+ 'amidpoint'
-memory_input = "memory_true.dat"
+memory_input = "Kernel_split_cv_commidpoint"
 memory = np.loadtxt(memory_input)
 
-dt=0.0001
+dt=0.002
 
 ev=1
 

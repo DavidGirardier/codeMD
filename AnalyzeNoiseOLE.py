@@ -24,8 +24,8 @@ recovered_noise_list_forbin = []
 
 kT=1.0
 dx=0.2
-numberOfSample = 3
-for sample in range(3,numberOfSample+1):
+numberOfSample = 5
+for sample in range(1,numberOfSample+1):
     print(sample)
     #input_traj = 'fraction500TrajMilsteing_gammasmallposm1_newdt0_005_2'
     input_traj = '10asso_NP_waternewdt0.8'
@@ -74,11 +74,9 @@ for sample in range(3,numberOfSample+1):
         if (t[i-1]<t[i]) and (t[i]<t[i+1]):
             index_pos = math.floor((x[i]-pos_min)/dpos)
 
-            sigma = np.sqrt(2.*dt*kT*gamma[index_pos]/mass[index_pos])
+            
 
-            recovered_noise = ((x[i+1] - x[i])/dt - 
-                            (1.0 -  gamma[index_pos]*dt/2.0)*(x[i+1] - x[i-1])/(2.*dt)
-                            + 0.5*dt*dFE[index_pos]/mass[index_pos])*2.0/sigma
+            recovered_noise = ((x[i+1] - x[i]) + ((1./kT)*1/gamma[index_pos]*dFE[index_pos])*dt)/(2*1.0/gamma[index_pos]*dt)
 
             # recovered_noise = ((x[i+1] - x[i])/dt - 
             #                    (1.0 -  gamma[index_pos]*dt/2.0)*v[i] 

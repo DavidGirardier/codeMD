@@ -20,12 +20,13 @@ def autocorrelation(data):
     return acorr
 
 def ForceDoubleWell(x:float):
-    # barrier = 10.
-    # Force = -4.0*barrier*x**3 + 4.0*barrier*x
-    Force = -9.81
+    barrier = 10.
+    Force = -4.0*barrier*x**3 + 4.0*barrier*x
+    #Force = -9.81
     # alpha = 0.
     # Force = -2.*x + 3.*alpha*x*x
     #Force=0.0
+    #Force = -50*x
 
     return Force
 
@@ -173,6 +174,7 @@ def Milstein(mass:float, kT:float, initialPosition:float, initialVelocity:float,
 
 
 def BAOAB(gamma:float, mass:float, kT:float, initialPosition:float, initialVelocity:float, timeStep:float, totalTime:float):
+    ###cehckmass
     trajectory:List[float] = []
     velocities:List[float] = []
     time:List[float] = []
@@ -245,16 +247,16 @@ def OBABO(gamma:float, mass:float, kT:float, initialPosition:float, initialVeloc
 
 gamma = 0.1
 
-mass = 1.
+mass = 7000.
 kT = 1.
-x0 = -0.
+x0 = 0.7
 
-dt=0.001
-t=100.
+dt=0.002
+t=50.
 PrintTraj = True
 lenght = int(t/dt) + 1
 
-numberOfTraj = 1.
+numberOfTraj = 500.
 
 fraction = 1.
 
@@ -283,7 +285,7 @@ for j in range(int(numberOfTraj)):
     
     v0 = np.sqrt(kT/mass) * np.random.normal()
     time, traj, vel, g1, acc = EulerMaruyamaFP(gamma, mass, kT, x0, v0, dt, t)
-    #time, traj, vel, g1 = CicottiVandenEijdenFP(gamma, mass, kT, x0, v0, dt, t)
+    #time, traj, vel, g1, g2 = CicottiVandenEijdenFP(gamma, mass, kT, x0, v0, dt, t)
     #time, traj, vel, g1, _ = CicottiVandenEijdenGammaPos(mass, kT, x0, v0, dt, t)
     #time, traj, vel, g1 = Milstein(mass, kT, x0, v0, dt, t)
 
@@ -291,7 +293,7 @@ for j in range(int(numberOfTraj)):
         alltime = alltime + time[::every]
         alltraj = alltraj + traj[::every]
         allvel = allvel + vel[::every]
-        allacc = allacc + acc[::every]
+        #allacc = allacc + acc[::every]
         # allg1 = allg1 + g1
         #allg2 = allg2 + g2
     x_final.append(traj[-1])
@@ -301,12 +303,20 @@ for j in range(int(numberOfTraj)):
     if (j+1) % (int(numberOfTraj/fraction)) == 0:
 
         countFrac = countFrac + 1
-        #outputName='500TrajVECg' + str(gamma) + 'm' + str(mass) + '_' + str(countFrac)
-        #outputName='Well_5TrajMilstein_gammasmallpos'+ 'm' + str(mass) + '_' + str(countFrac)
+        #outputName='EulerHarmo_'+str(dt)+'_g' + str(gamma) + 'm' + str(mass) + 'every'+ str(every) +'_' + str(countFrac)
+        outputName=str(numberOfTraj)+'DW10_g'+str(gamma)+ 'm' + str(mass) + '_' + str(countFrac)
         #outputName='Eulerm120g1_5DW7FullkTdt0_001x20_Ergodic_'+str(countFrac)
-        outputName='Euler9_81xg'+str(gamma)
-        np.savetxt(outputName, np.c_[alltime,alltraj,allvel,allacc], fmt='%1.8E')
+        
+        np.savetxt(outputName, np.c_[alltime,alltraj,allvel], fmt='%1.8E')
+        #np.savetxt(outputName, np.c_[alltime,alltraj,allvel,allacc], fmt='%1.8E')
 
+
+        # outputName='allDigit'+str(gamma)
+        # np.savetxt(outputName, np.c_[alltime,alltraj,allvel], fmt='%1.8E')
+        # outputName='3Digit'+str(gamma)
+        # np.savetxt(outputName, np.c_[alltime,alltraj,allvel], fmt='%.3f')
+        # outputName='2Digit'+str(gamma)
+        # np.savetxt(outputName, np.c_[alltime,alltraj,allvel], fmt='%.2f')
 
         v2 = [v*v for v in allvel]
         x = [q for q in alltraj]
@@ -314,7 +324,7 @@ for j in range(int(numberOfTraj)):
         print('<v> = ' + str(np.mean(allvel)) + '\t <v^2> = ' + str(np.mean(v2)))
         print('mkT = 1/<v^2> = ' + str(1./(np.mean(v2))) + '\t input mkT = ' + str(mass*kT))
         print('<x^2> - <x>^2 = ' + str(np.mean(x2) - np.mean(x)*np.mean(x)))
-        print('<a> =' + str(np.mean(acc)))
+        #print('<a> =' + str(np.mean(acc)))
         alltime = []
         alltraj = []
         allvel = []

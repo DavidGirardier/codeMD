@@ -25,9 +25,9 @@ for j in range(numberOfFile):
         #print(i)
         time = time + dt
         
-        if trajectory[i,1] <= 1.1:
+        if trajectory[i,1] <= 2.74:
             pos = 'A'
-        elif 1.325 <= trajectory[i,1]:
+        elif 3.2 <= trajectory[i,1]:
             pos = 'B'
         
         if oldpos != pos and pos == 'B' and oldpos == 'A':

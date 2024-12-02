@@ -5,12 +5,13 @@ import matplotlib.pyplot as plt
 import math
 import sys
 
-def Milstein(profile, kT:float, initialPosition:float, initialVelocity:float, timeStep:float, totalTime:float):
+def Milstein(profile, kT:float, initialPosition:float, maxPosition:float, initialVelocity:float, timeStep:float, totalTime:float):
     trajectory:List[float] = []
     velocities:List[float] = []
     time:List[float] = []
     g:List[float] = []
     #print(profile[:,0])
+    mass = profile[1,4]
     pos = profile[:,0]
     pos_min = profile[0,0]
     dpos = profile[1,0]-profile[0,0]
@@ -60,7 +61,7 @@ def Milstein(profile, kT:float, initialPosition:float, initialVelocity:float, ti
         g.append(randomNumber)
         x = x_new
         v = v_new
-        if x > 1.325 :
+        if x > maxPosition :
             
             return i*timeStep
     return i*timeStep
@@ -129,8 +130,8 @@ def CicottiVandenEijdenFP(profile, kT:float, initialPosition:float, initialVeloc
             return i*timeStep
         
     return i*timeStep
-for time in [0.1,0.2,0.3,0.4,0.5,1.0]:
-    beg_input = "ProfTMFinalOpti5Loop_fractionLine_500TPS_newdt"+str(time)
+for time in [0.5]:
+    beg_input = "ProfFinalOpti5Loop_fraction150shootings1ns_newdt"+str(time)
     MFPT=[]
     numberOfSample = 5
     for k in range(1,numberOfSample+1):
@@ -141,17 +142,17 @@ for time in [0.1,0.2,0.3,0.4,0.5,1.0]:
         kT=1.
         mass = profile[1,4]
         print(mass)
-        x0 = 1.0
-        xmax = 1.4
+        x0 = 2.95
+        xmax = 3.18
         v0 = np.sqrt(kT/mass) * np.random.normal()
-        dt = 0.001
-        maxTime = 100000.
+        dt = 0.01
+        maxTime = 1000000.
         timeEscape = []
         
         
         for i in range(100):
             print(i)
-            time = Milstein(profile, kT, x0, v0, dt, maxTime)
+            time = Milstein(profile, kT, x0,xmax, v0, dt, maxTime)
             #time = CicottiVandenEijdenFP(profile, kT, x0, v0, dt, xmax, maxTime)
             timeEscape.append(time)
 

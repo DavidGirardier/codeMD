@@ -6,11 +6,11 @@ import sys
 
 import glob
 
-input_name = 'split_filter_500best'
+input_name = 'split_zeta'
 files = glob.glob(input_name + '*')
 
-plot_option='False'
-threshold_freq = 10
+# plot_option='True'
+threshold_freq = 50
 print(files)
 for name in files :
 

@@ -1,21 +1,21 @@
 import numpy as np
 
-numberOfFile = 1
-tFile = 170.
-dt = 0.001
+numberOfFile = 10
+tFile = 1000.
+dt = 0.002
 gamma=2.0
 mass_anal = 1480.
-nLine = int(tFile/dt +1)
+nLine = int(tFile/dt)
 
 inputfile = input('inpute file:')
 positionAndvelocities = []
 
 fromPosorVel = 'q'
-maxQ=-1000.
-minQ=1000.
+# maxQ=-1000.
+# minQ=1000.
 #everyList = [1,2,3,4,5,6,7,8,9,10,20,50,100,200,250,300,350,400,450,500,600,700,800,900,1000]
-everyList = [1,10,100]
-#everyList = np.arange(1,51,5)
+# everyList = [1,10,100,200,250,500]
+everyList = np.arange(1,501)
 matrixMass=[]
 mass = []
 error = []
@@ -37,11 +37,11 @@ if fromPosorVel == 'q':
                 positionAndvelocities.append([trajectory[k][1], velocity])
             #print('traj' + str(j) + 'done')
 
-            if max(trajectory[:,1])>maxQ:
-                maxQ=max(trajectory[:,1])
+            # if max(trajectory[:,1])>maxQ:
+            #     maxQ=max(trajectory[:,1])
 
-            if min(trajectory[:,1])<minQ:
-                minQ=min(trajectory[:,1])
+            # if min(trajectory[:,1])<minQ:
+            #     minQ=min(trajectory[:,1])
 
     # print('Position max = ' + str(maxQ))
     # print('Position min = ' + str(minQ))

@@ -1,7 +1,7 @@
 import numpy as np
 
-file = open("thermoNVE.txt","r")
-thermo = np.loadtxt('thermoNVE.txt')
+file = open("NVE_noCharge.txt","r")
+thermo = np.loadtxt('NVE_noCharge.txt')
 print(np.std(thermo[:,4]))
 
 fileLines = file.readlines()
@@ -52,6 +52,7 @@ avg_pot = sum_pot/count
 avg_pot2 = sum_pot2/count
 #print(str(sum_pot) + '  ' + str(sum_pot2))
 DV = abs((avg_pot2 - avg_pot**2))**0.5
-
+drift = np.mean(thermo[9*int(len(thermo[:,0])/100):,5])-np.mean(thermo[0:int(len(thermo[:,0])/100),5])
 
 print("DE/DV = " + str(DE/DV) + "\t DE = " + str(DE) + "\t DK = " + str(DK) + "\t DV = " + str(DV))
+print("drift = " + str(drift))

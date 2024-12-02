@@ -1,19 +1,20 @@
 import numpy as np
 
 
-inputfile = 'filtered_500tps_best_freq_20'
+inputfile = '100shortZWall_sd0_01'
 trajectories = np.loadtxt(inputfile)
 
 IsVel = False
-
+fractions = 5
 alltime = []
 alltraj = []
 allvel = []
-t = 20.0
-dtIni = 0.01
-numberTraj = 500
+t = 5.
+dtIni = 0.002
+numberTraj = 100
 #dtList = [0.005,0.01,0.02,0.05,0.1]
-dtList = [0.02,0.04,0.1]
+
+dtList = [0.01]
 for dtime in dtList :
     alltime = []
     alltraj = []
@@ -68,7 +69,7 @@ for dtime in dtList :
     print([max(alltraj),min(alltraj)])
     np.savetxt(outputName+ 'qMinandMax', [max(alltraj),min(alltraj)], fmt='%1.8E')
 
-    fractions = 5
+    
     x = []
     y = []
     z = []
