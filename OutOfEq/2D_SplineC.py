@@ -36,7 +36,7 @@ def cubic_spline_interpolation(x_values, y_values, z_values):
     return surface_plot, contour_plot, spline
 
 
-filename = '../comm_Z1g50.0ntraj1000'
+filename = 'comm_Z2g1.0ntraj1000'
 z = np.loadtxt(filename)  # Example data for z
 
 with open(filename, "r") as file:
@@ -106,11 +106,11 @@ with open(filename+'_spline.pkl', 'wb') as f:
 
  
 
-
+exit()
 # with open('spline.pkl', 'rb') as f:
 #     loaded_spline = pickle.load(f)
 # folder="traj/"
-inputfile= 'ntraj10000_Z1g5.0m1.0'
+inputfile= 'ntraj10000_Z1g50.0m1.0'
 
 files= glob.glob(inputfile+'*')
 

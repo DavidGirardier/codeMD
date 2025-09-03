@@ -89,88 +89,93 @@ def DissipationWork(mQ,mV):
             allWork.append(Work)
         matrixWork.append(allWork)
     return np.array(matrixWork)
-    
+def mass_function(x,e,a,b,c):
+    d=-0.5
+    mass_x = e*(x+d)**12+a*(x+d)**4+b*(x+d)**2+c
+    return mass_x   
 
-folder='traj/'
-folder_out='analysis/'
-inputfile= 'ntraj10000_Z2g1.0m1.0'
-
+# folder='traj/'
+# folder_out='analysis/'
+# inputfile= 'pathCVlong_ntraj10000_Z1g1.0m1.0'
+folder='alltraj/'
+folder_out='./'
+inputfile= 'ProfFinalOpti5Loop_fraction500traj2ps_newdt0.03_1'
 
 files= glob.glob(folder+inputfile+'*')
 unzoomedFactor = 1
-dt = 0.001
+dt = 0.0001
 #print(files)
 
 newdt = dt * unzoomedFactor
+e= 374339.5019495117
+a=-64.5618159872048
+b=14.299947369782165 
+c=16.408592726744953
+
+matrixTIME=[]
+matrixVAC=[]
+matrixQ=[]
+matrixV=[]
+matrixM=[]
+matrixV2=[]
+
+for j in files:
+
+    trajectory = np.loadtxt(j)
+
+    # print(trajectory)
+    # print(trajectory[1,1])
+    # exit()
+    unzoomedVel = [(trajectory[i+1*unzoomedFactor,1]-trajectory[i-1*unzoomedFactor,1])/(2.*dt*unzoomedFactor) for i in range(1*unzoomedFactor,len(trajectory)-1*unzoomedFactor,unzoomedFactor)]
+    
+    matrixTIME.append(trajectory[1:-1,0])
+    matrixQ.append(trajectory[1:-1,1])
+    # matrixVAC.append(autocorrelation0(unzoomedVel))
+    matrixV.append(unzoomedVel)
+    matrixM.append(mass_function(trajectory[1:-1,1],e,a,b,c))
+    #matrixV2.append(unzoomedVel*unzoomedVel)
+
+    
+    
+    trajectory = []
+
+max_len = max(len(t) for t in matrixV)
+longest_traj_index = max(range(len(matrixV)), key=lambda i: len(matrixV[i]))
+longestTime = matrixTIME[longest_traj_index]
+
+padded_vel = [np.pad(t, (0, max_len - len(t)), 'constant') for t in matrixV]
+padded_pos = [np.pad(t, (0, max_len - len(t)), 'constant') for t in matrixQ]
+
+matrixV = np.array(padded_vel)
+matrixQ = np.array(padded_pos)
+numberOfTraj= len(matrixV[:,0])
+vac0 = VAC0(matrixV)
+print(matrixV)
+
+print(np.mean(np.multiply(matrixV,matrixV),axis=0))
 
 
-ratio_list = np.linspace(0,1,6)
+meanV2 = np.mean(np.multiply(matrixV,matrixV),axis=0)
+stdV2 = np.std(np.multiply(matrixV,matrixV),axis=0)
+outputName=folder_out+'VAC0'+inputfile
+np.savetxt(outputName, np.c_[longestTime, vac0], fmt='%1.8E')
+outputName=folder_out+'V2'+inputfile
+np.savetxt(outputName, np.c_[longestTime, meanV2,stdV2/np.sqrt(numberOfTraj)], fmt='%1.8E')
 
-for ratio in ratio_list:
-    print(str(ratio))
-    matrixTIME=[]
-    matrixVAC=[]
-    matrixQ=[]
-    matrixV=[]
-    matrixV2=[]
+dissip = DissipationWork(matrixQ,matrixV)
+meanWd = np.mean(dissip,axis=0)
+stdWd = np.std(dissip,axis=0)
+outputName=folder_out+'Wd'+inputfile
+np.savetxt(outputName, np.c_[longestTime[:-1], meanWd,stdWd/np.sqrt(numberOfTraj)], fmt='%1.8E')
 
-    for j in files:
+V20=meanV2[0]
+outputName=folder_out+'V2norm'+inputfile
+np.savetxt(outputName, np.c_[longestTime, meanV2/V20,stdV2/np.sqrt(numberOfTraj)], fmt='%1.8E')
 
-        Twodim = np.array(np.loadtxt(j))
-        time=Twodim[:,0]
-        x=Twodim[:,1]
-        y=Twodim[:,2]
-
-
-        combination = -1.0*(ratio * x + (1.0-ratio)*y)
-        trajectory=np.column_stack((time, combination))
-        # print(trajectory)
-        # print(trajectory[1,1])
-        # exit()
-        unzoomedVel = [(trajectory[i+1*unzoomedFactor,1]-trajectory[i-1*unzoomedFactor,1])/(2.*dt*unzoomedFactor) for i in range(1*unzoomedFactor,len(trajectory)-1*unzoomedFactor,unzoomedFactor)]
-        
-        matrixTIME.append(trajectory[1:-1,0])
-        matrixQ.append(trajectory[1:-1,1])
-        # matrixVAC.append(autocorrelation0(unzoomedVel))
-        matrixV.append(unzoomedVel)
-        #matrixV2.append(unzoomedVel*unzoomedVel)
-
-        
-        
-        trajectory = []
-
-    max_len = max(len(t) for t in matrixV)
-    longest_traj_index = max(range(len(matrixV)), key=lambda i: len(matrixV[i]))
-    longestTime = matrixTIME[longest_traj_index]
-
-    padded_vel = [np.pad(t, (0, max_len - len(t)), 'constant') for t in matrixV]
-    padded_pos = [np.pad(t, (0, max_len - len(t)), 'constant') for t in matrixQ]
-
-    matrixV = np.array(padded_vel)
-    matrixQ = np.array(padded_pos)
-    numberOfTraj= len(matrixV[:,0])
-    vac0 = VAC0(matrixV)
-    print(matrixV)
-
-    print(np.mean(np.multiply(matrixV,matrixV),axis=0))
-
-
-    meanV2 = np.mean(np.multiply(matrixV,matrixV),axis=0)
-    stdV2 = np.std(np.multiply(matrixV,matrixV),axis=0)
-    outputName=folder_out+'VAC0'+inputfile+'_ratio_'+str(ratio)[0:4]
-    np.savetxt(outputName, np.c_[longestTime, vac0], fmt='%1.8E')
-    outputName=folder_out+'V2'+inputfile+'_ratio_'+str(ratio)[0:4]
-    np.savetxt(outputName, np.c_[longestTime, meanV2,stdV2/np.sqrt(numberOfTraj)], fmt='%1.8E')
-
-    dissip = DissipationWork(matrixQ,matrixV)
-    meanWd = np.mean(dissip,axis=0)
-    stdWd = np.std(dissip,axis=0)
-    outputName=folder_out+'Wd'+inputfile+'_ratio_'+str(ratio)[0:4]
-    np.savetxt(outputName, np.c_[longestTime[:-1], meanWd,stdWd/np.sqrt(numberOfTraj)], fmt='%1.8E')
-
-    V20=meanV2[0]
-    outputName=folder_out+'V2norm'+inputfile+'_ratio_'+str(ratio)[0:4]
-    np.savetxt(outputName, np.c_[longestTime, meanV2/V20,stdV2/np.sqrt(numberOfTraj)], fmt='%1.8E')
+meanKin = np.mean(np.multiply(np.multiply(matrixV,matrixV),matrixM),axis=0)
+stdKin = np.std(np.multiply(np.multiply(matrixV,matrixV),matrixM),axis=0)
+outputName=folder_out+'Kin'+inputfile
+np.savetxt(outputName, np.c_[longestTime, meanKin,stdKin/np.sqrt(numberOfTraj)], fmt='%1.8E')
 # print(dissip)
 # plt.plot(longestTime[:-1],np.mean(dissip,axis=0))
 # plt.show()

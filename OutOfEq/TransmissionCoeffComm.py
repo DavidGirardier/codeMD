@@ -17,9 +17,9 @@ def theta(x):
         return 0
 
 
-inputfile= 'comm_ntraj10000_Z1g5.0m1.0'
+inputfile= 'pathCV_ntraj10000_Z1g1.0m1.0'
 
-ratio_list = np.linspace(0,1,11)
+
 
 
 

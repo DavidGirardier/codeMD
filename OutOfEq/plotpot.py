@@ -1,4 +1,4 @@
-from pot import Z1,Z2
+from pot import Z1,Z2,DW
 import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
@@ -19,7 +19,7 @@ matrixPot = []
 
 for i in x_values:
     for j in y_values:
-        fx,fy,e =Z2(i,j)
+        fx,fy,e =DW(i,j,5)
         matrixPot.append(e)
 
 matrixPot = np.array(matrixPot)

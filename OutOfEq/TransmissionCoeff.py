@@ -17,7 +17,7 @@ def theta(x):
         return 0
 
 
-inputfile= 'ntraj10000_Z1g5.0m1.0'
+inputfile= 'ntraj10000_Z1g50.0m1.0'
 
 ratio_list = np.linspace(0,1,11)
 

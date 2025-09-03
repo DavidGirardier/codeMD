@@ -6,10 +6,10 @@ from pot import Z1,Z2
 #rx=2.0, ry=0.5
 
 @jit(nopython=True)
-def is_in_region_A(x, y, xyA, rx=1.0, ry=1.0):
+def is_in_region_A(x, y, xyA, rx=2.0, ry=0.5):
     return (x - xyA[0])**2 /rx**2 + (y - xyA[1])**2/ry**2 < 1
 @jit(nopython=True)
-def is_in_region_B(x, y, xyB,  rx=1.0, ry=1.0):
+def is_in_region_B(x, y, xyB,  rx=2.0, ry=0.5):
     return (x - xyB[0])**2 /rx**2 + (y - xyB[1])**2/ry**2 < 1
 
 @jit(nopython=True)
@@ -54,7 +54,7 @@ def EulerMaruyamaComm(mass, gamma, kT, initialPosition, initialVelocity, timeSte
    
 ntraj=1000
 m = 1.
-g = 50.
+g = 1.
 kT = 1.
 
 dt=0.001
@@ -65,10 +65,10 @@ all_t = []
 all_x = []
 all_y = []
 
-BassinA = (-1.,0.)
-BassinB = (1.,0.)
-# BassinA = (-2.,-1.)
-# BassinB = (2.,1.)
+# BassinA = (-1.,0.)
+# BassinB = (1.,0.)
+BassinA = (-2.,-1.)
+BassinB = (2.,1.)
 
 # xrange = (-4,4)
 # yrange = (-1.5,1.5)
@@ -115,7 +115,7 @@ for i, (x0, y0) in enumerate(initial_points):
     for j in range(ntraj):
         vel0x = np.sqrt(kT/m) * np.random.normal()
         vel0y = np.sqrt(kT/m) * np.random.normal()
-        which_bassin = EulerMaruyamaComm(m,g,kT,pos0,[vel0x,vel0y],dt,tot_t,Z1,BassinA,BassinB)
+        which_bassin = EulerMaruyamaComm(m,g,kT,pos0,[vel0x,vel0y],dt,tot_t,Z2,BassinA,BassinB)
         if which_bassin == 'A':
             counterA = counterA +1
         

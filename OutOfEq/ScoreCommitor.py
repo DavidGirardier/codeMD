@@ -6,10 +6,10 @@ import pickle
 from sklearn.metrics import mean_squared_error
 from scipy.optimize import curve_fit
 
-with open('spline.pkl', 'rb') as f:
+with open('comm_Z2g1.0ntraj1000_spline.pkl', 'rb') as f:
     loaded_spline = pickle.load(f)
 
-inputfile= 'traj/ntraj10000_Z1g1.0m1.0'
+inputfile= 'traj/ntraj10000_Z2g1.0m1.0'
 
 plotting_option=False
 files= glob.glob(inputfile+'*')
@@ -31,6 +31,7 @@ for j in files:
 
         #print(spline(trajectory[l,1],trajectory[l,2])[0][0])
         comm_val = loaded_spline(trajectory[l,1],trajectory[l,2])[0][0]
+        #print(comm_val)
         # if comm_val > 0.01 and comm_val < 0.99:
         if l%every == 0:
             comm.append(comm_val)
